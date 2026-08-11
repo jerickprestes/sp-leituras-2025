@@ -46,7 +46,7 @@ class SiteHeader extends HTMLElement {
           </div>
         </div>
 
-        <div class="container site-header__brand">
+        <div class="site-header__brand">
           <a href="${base}index.html" class="site-header__logo">
             <span class="site-header__logo-text">spleituras</span>
             <span class="site-header__logo-tag">organização social de cultura</span>

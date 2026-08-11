@@ -1,0 +1,27 @@
+/* =======================================================
+ * ARQUIVO: css_patch.css
+ * Copie e cole os blocos abaixo substituindo os antigos 
+ * no seu arquivo css/style.css
+ * ======================================================= */
+
+/* 1. Altere a variável de largura máxima no seu :root (topo do arquivo) */
+:root {
+  /* Aumentado de 1200px (ou similar) para 1600px para destravar o limite em telas grandes */
+  --container: 1600px; 
+}
+
+/* 2. Substitua a classe .container (APAGUE os @media queries dela também) */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  /* A mágica do layout largo: 20px mobile, 6vw em monitores, e trava em 90px no ultrawide */
+  padding-inline: clamp(20px, 6vw, 90px);
+}
+
+/* 3. Substitua a classe .site-header__brand (Alinhamento exclusivo do logo) */
+.site-header__brand {
+  padding-block: 18px 22px;
+  /* Usa 2vw para garantir que o logo sempre "quebre" a margem e fique mais próximo da borda esquerda que o resto do site */
+  padding-left: clamp(16px, 2vw, 30px);
+}
