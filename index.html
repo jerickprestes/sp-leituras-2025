@@ -17,7 +17,7 @@
 
   <main id="conteudo">
     <!-- ===================== HERO / NOVIDADES ===================== -->
-    <section class="hero container">
+    <section class="hero container snap-section">
       <div class="hero__eyebrow-row">
         <a href="novidades.html" class="eyebrow">novidades</a>
       </div>
@@ -44,7 +44,7 @@
     </section>
 
     <!-- ===================== NOSSA ATUAÇÃO ===================== -->
-    <section class="section container" id="nossa-atuacao">
+    <section class="section container snap-section" id="nossa-atuacao">
       <div class="section-title-row">
         <span class="eyebrow">nossa atuação</span>
       </div>
@@ -80,7 +80,7 @@
     </section>
 
     <!-- ===================== EQUIPAMENTOS ===================== -->
-    <section class="section equip" id="equipamentos">
+    <section class="section equip snap-section" id="equipamentos">
       <div class="container equip-grid">
         <div>
           <span class="eyebrow">equipamentos</span>
@@ -129,7 +129,7 @@
     </section>
 
     <!-- ===================== RECONHECIMENTO E PRÊMIOS ===================== -->
-    <section class="section container">
+    <section class="section container snap-section">
       <div class="section-title-row">
         <span class="eyebrow">reconhecimento e prêmios</span>
       </div>
@@ -166,7 +166,7 @@
     </section>
 
     <!-- ===================== PATROCINADORES / PARCEIROS ===================== -->
-    <section class="container logos-block">
+    <section class="container logos-block snap-section">
       <span class="mono-label">_alguns patrocinadores</span>
       <div class="logos-row">
         <img src="assets/images/logo-colegio-vital-brazil.webp" alt="Colégio Vital Brazil" width="140" height="63" loading="lazy" />
@@ -178,7 +178,7 @@
       </div>
     </section>
 
-    <section class="container logos-block section--tight">
+    <section class="container logos-block section--tight snap-section">
       <span class="mono-label">_alguns de nossos parceiros</span>
       <div class="logos-row">
         <img src="assets/images/logo-motorola.webp" alt="Motorola" width="120" height="80" loading="lazy" />
@@ -195,7 +195,7 @@
     </section>
 
     <!-- ===================== CTA PATROCINADOR ===================== -->
-    <section class="section cta-dark">
+    <section class="section cta-dark snap-section" data-nav-contrast="true">
       <div class="container cta-dark-grid">
         <div>
           <span class="eyebrow">organização social de cultura</span>
@@ -215,9 +215,18 @@
     </section>
   </main>
 
-  <site-footer></site-footer>
+  <site-footer class="snap-section"></site-footer>
+
+  <button type="button" id="sectionNav" class="section-nav" aria-label="Ir para a próxima seção">
+    <svg class="section-nav__arrow" width="16" height="46" viewBox="0 0 16 46" fill="none" aria-hidden="true">
+      <line x1="8" y1="0" x2="8" y2="32" stroke="currentColor" stroke-width="1.5" />
+      <path d="M1.5 26L8 34L14.5 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <span class="section-nav__dot" aria-hidden="true"></span>
+  </button>
 
   <script src="js/site-header.js" defer></script>
   <script src="js/site-footer.js" defer></script>
+  <script src="js/site-interactions.js" defer></script>
 </body>
 </html>

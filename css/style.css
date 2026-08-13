@@ -109,6 +109,10 @@
   --radius-pill: 999px;
 
   --shadow-card: 0 20px 40px rgba(33, 29, 29, 0.08);
+
+  /* Atualizada via ResizeObserver em site-header.js — altura real do
+     header sticky, usada como scroll-margin-top nas .snap-section. */
+  --header-h: 0px;
 }
 
 /* ---- Reset ---- */
@@ -121,6 +125,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
 }
 
 body {
@@ -210,6 +215,29 @@ summary:focus-visible {
 
 .section--tight {
   padding-block: 36px;
+}
+
+/* ---- Snap sections (100vh + scroll snap) ----
+   Classe manual: adicione .snap-section em qualquer <section> (ou no
+   <site-footer>) que deva participar do efeito de tela cheia + snap.
+   min-height (não height fixo) evita cortar conteúdo em seções mais longas. */
+.snap-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-snap-align: start;
+  /* Compensa o header sticky: sem isso, o encaixe alinha a seção ao
+     y=0 real da página, e a altura do header "come" uma fatia da
+     seção — que reaparece como um vazamento do fundo da próxima. */
+  scroll-margin-top: var(--header-h);
+  scroll-snap-stop: always;
+}
+
+/* O rodapé não deve ser centralizado verticalmente — mantém o conteúdo
+   colado na base da tela, como um rodapé de página normal. */
+site-footer.snap-section {
+  justify-content: flex-end;
 }
 
 .divider {
@@ -366,6 +394,14 @@ h1.page-title {
    ========================================================================== */
 .site-header {
   background: var(--color-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: box-shadow 0.2s ease;
+}
+
+.site-header.is-compact {
+  box-shadow: 0 4px 16px rgba(33, 29, 29, 0.08);
 }
 
 .site-header__top {
@@ -448,6 +484,11 @@ h1.page-title {
   padding-block: 18px 22px;
   /* Usa 2vw para garantir que o logo sempre "quebre" a margem e fique mais próximo da borda esquerda que o resto do site */
   padding-left: clamp(16px, 2vw, 30px);
+  transition: padding-block 0.25s ease;
+}
+
+.site-header.is-compact .site-header__brand {
+  padding-block: 10px 12px;
 }
 
 .site-header__logo {
@@ -463,6 +504,11 @@ h1.page-title {
   letter-spacing: -0.02em;
   color: var(--color-ink);
   line-height: 1;
+  transition: font-size 0.25s ease;
+}
+
+.site-header.is-compact .site-header__logo-text {
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
 }
 
 .site-header__logo-tag {
@@ -472,6 +518,12 @@ h1.page-title {
   letter-spacing: 0.24em;
   color: var(--color-pink);
   text-transform: uppercase;
+  transition: font-size 0.25s ease, opacity 0.25s ease;
+}
+
+.site-header.is-compact .site-header__logo-tag {
+  font-size: 0.5rem;
+  opacity: 0.8;
 }
 
 .site-header__rule {
@@ -1737,6 +1789,77 @@ h1.page-title {
     border-radius: 50%;
     background: var(--color-ink);
   }
+}
+
+/* ==========================================================================
+   Botão de paginação entre seções (seta + bolinha)
+   ========================================================================== */
+.section-nav {
+  position: fixed;
+  right: 24px;
+  /* 24px base + 40px pra não ficar embaixo da faixa preta do rodapé
+     (.site-footer__bottom, onde fica o CNPJ) */
+  bottom: 64px;
+  width: 40px;
+  height: 84px;
+  padding: 0;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: var(--color-ink);
+  z-index: 90;
+  transition: color 0.25s ease;
+}
+
+.section-nav__arrow {
+  order: 1;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.section-nav__dot {
+  order: 2;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.section-nav:hover .section-nav__arrow {
+  transform: translateY(-10px);
+}
+
+.section-nav:hover .section-nav__dot {
+  background: currentColor;
+}
+
+/* Contraste automático: quando a seção atrás do botão usa o mesmo
+   --color-ink como fundo (ex.: .cta-dark), troca para uma cor da
+   paleta com contraste — controlado via JS em site-interactions.js. */
+.section-nav.is-on-dark {
+  color: var(--color-pink);
+}
+
+/* No rodapé (última seção), o botão vira "voltar ao topo": a bolinha
+   sobe para cima da seta, e a seta se inverte para apontar pra cima. */
+.section-nav.is-footer .section-nav__arrow {
+  order: 2;
+  transform: rotate(180deg);
+}
+
+.section-nav.is-footer .section-nav__dot {
+  order: 1;
+}
+
+.section-nav.is-footer:hover .section-nav__arrow {
+  transform: rotate(180deg) translateY(-10px);
 }
 
 /* ==========================================================================
