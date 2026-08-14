@@ -46,22 +46,126 @@
     });
   };
 
-  /* ---- Slider do hero (imagem de destaque) ---- */
-  var heroCard = document.querySelector(".hero__card");
-  var heroImage = heroCard && heroCard.querySelector("[data-gallery-image]");
-  var heroNavButtons = document.querySelectorAll(
-    ".hero__nav [data-gallery-nav]"
-  );
+  /* ---- Carrossel do hero (banners com imagem + título + texto) ----
+     Lê os banners de .hero-slides (HTML puro, escondido) e preenche
+     o card visível (.hero__card). Troca sozinho a cada 5s; setas e
+     cliques na prévia resetam o temporizador pra não sobrepor uma
+     troca manual com uma automática logo em seguida. */
+  (function setupHeroCarousel() {
+    var heroCard = document.querySelector(".hero__card");
+    var slidesContainer = document.querySelector(".hero-slides");
+    if (!heroCard || !slidesContainer) return;
 
-  if (heroCard && heroImage && heroNavButtons.length) {
-    var heroGallery = [];
-    try {
-      heroGallery = JSON.parse(heroCard.getAttribute("data-gallery") || "[]");
-    } catch (e) {
-      heroGallery = [];
-    }
-    setupFadeGallery(heroNavButtons, heroImage, heroGallery);
-  }
+    var slides = Array.prototype
+      .slice.call(slidesContainer.querySelectorAll(".hero-slide"))
+      .map(function (node) {
+        var img = node.querySelector("img");
+        var title = node.querySelector("h2");
+        var text = node.querySelector("p");
+        return {
+          image: img ? img.getAttribute("src") : "",
+          alt: img ? img.getAttribute("alt") || "" : "",
+          title: title ? title.textContent : "",
+          text: text ? text.textContent : "",
+          href: node.getAttribute("data-href") || "#",
+        };
+      });
+
+    if (!slides.length) return;
+
+    var heroImage = heroCard.querySelector("[data-hero-image]");
+    var heroTitle = heroCard.querySelector("[data-hero-title]");
+    var heroText = heroCard.querySelector("[data-hero-text]");
+    var navButtons = document.querySelectorAll(
+      ".hero__nav [data-gallery-nav]"
+    );
+    var previewItems = Array.prototype.slice.call(
+      document.querySelectorAll(".hero-preview__item")
+    );
+
+    var currentIndex = 0;
+    var AUTO_DELAY = 5000;
+    var timer = null;
+
+    var renderPreview = function () {
+      previewItems.forEach(function (item, offset) {
+        var slideIndex = (currentIndex + 1 + offset) % slides.length;
+        var slide = slides[slideIndex];
+        var img = item.querySelector("img");
+        var titleEl = item.querySelector(".hero-preview__title");
+        if (img) {
+          img.setAttribute("src", slide.image);
+          img.setAttribute("alt", slide.alt);
+        }
+        if (titleEl) titleEl.textContent = slide.title;
+        item.setAttribute("data-preview-index", String(slideIndex));
+      });
+    };
+
+    var renderSlide = function (index, animate) {
+      var slide = slides[index];
+      if (!slide) return;
+
+      var apply = function () {
+        if (heroImage) {
+          heroImage.setAttribute("src", slide.image);
+          heroImage.setAttribute("alt", slide.alt);
+        }
+        if (heroTitle) heroTitle.textContent = slide.title;
+        if (heroText) heroText.textContent = slide.text;
+        heroCard.setAttribute("href", slide.href);
+      };
+
+      if (animate && heroImage) {
+        heroImage.classList.add("is-fading");
+        window.setTimeout(function () {
+          apply();
+          heroImage.classList.remove("is-fading");
+        }, 250);
+      } else {
+        apply();
+      }
+
+      renderPreview();
+    };
+
+    var goTo = function (index, animate) {
+      currentIndex = (index + slides.length) % slides.length;
+      renderSlide(currentIndex, animate !== false);
+    };
+
+    var resetTimer = function () {
+      if (timer) window.clearInterval(timer);
+      if (slides.length < 2) return;
+      timer = window.setInterval(function () {
+        goTo(currentIndex + 1);
+      }, AUTO_DELAY);
+    };
+
+    navButtons.forEach(function (btn) {
+      btn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var direction =
+          btn.getAttribute("data-gallery-nav") === "next" ? 1 : -1;
+        goTo(currentIndex + direction);
+        resetTimer();
+      });
+    });
+
+    previewItems.forEach(function (item) {
+      item.addEventListener("click", function () {
+        var index = parseInt(item.getAttribute("data-preview-index"), 10);
+        if (!isNaN(index)) {
+          goTo(index);
+          resetTimer();
+        }
+      });
+    });
+
+    renderSlide(currentIndex, false);
+    resetTimer();
+  })();
 
   /* ---- Paginação entre seções (seta + bolinha) ---- */
   var sectionNav = document.getElementById("sectionNav");

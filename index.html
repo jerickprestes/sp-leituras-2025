@@ -21,25 +21,55 @@
       <div class="hero__eyebrow-row">
         <a href="novidades.html" class="eyebrow">novidades</a>
         <div class="hero__nav">
-          <button type="button" class="hero__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+          <button type="button" class="hero__nav-btn" data-gallery-nav="prev" aria-label="Banner anterior">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <button type="button" class="hero__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+          <button type="button" class="hero__nav-btn" data-gallery-nav="next" aria-label="Próximo banner">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </div>
-      <a class="hero__card" href="novidade-detalhe.html" data-gallery='["assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/logo-natura.webp"]'>
+
+      <!-- Fonte de dados dos banners do carrossel — HTML puro (sem JSON
+           embutido), pra ficar fácil de adicionar/editar um banner à
+           mão: duplique um .hero-slide, troque a imagem, o título, o
+           texto e o data-href. O JS lê isso e preenche o card visível
+           logo abaixo; esta lista em si nunca aparece na tela. -->
+      <div class="hero-slides" hidden>
+        <div class="hero-slide" data-href="novidade-detalhe.html">
+          <img src="assets/images/hero-biblioteca-villa-lobos.jpg" alt="Fachada da Biblioteca Parque Villa-Lobos, prédio moderno cercado de gramado" />
+          <h2>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
+          <p>O equipamento, que ocupa uma área de 4 mil m², é conectado com questões de sustentabilidade, além de oferecer espaços para lazer, trabalho e estudo. Atingiu recentemente a marca de 2 milhões de usuários atendidos.</p>
+        </div>
+        <!-- TODO: banners 2, 3 e 4 são placeholders (imagem/texto de teste, reaproveitando assets já existentes) — substituir por notícias reais -->
+        <div class="hero-slide" data-href="#">
+          <img src="assets/images/equipamentos-biblioteca-interior.jpg" alt="Interior de biblioteca com estantes de livros e área de leitura" />
+          <h2>BibliON alcança nova marca de empréstimos digitais</h2>
+          <p>Texto institucional pendente — substituir pelo conteúdo real desta notícia.</p>
+        </div>
+        <div class="hero-slide" data-href="#">
+          <img src="assets/images/logo-natura.webp" alt="" />
+          <h2>SP Leituras firma nova parceria com patrocinador</h2>
+          <p>Texto institucional pendente — substituir pelo conteúdo real desta notícia.</p>
+        </div>
+        <div class="hero-slide" data-href="#">
+          <img src="assets/images/logo-globo.webp" alt="" />
+          <h2>Prêmio de inovação reconhece projeto da SP Leituras</h2>
+          <p>Texto institucional pendente — substituir pelo conteúdo real desta notícia.</p>
+        </div>
+      </div>
+
+      <a class="hero__card" href="novidade-detalhe.html">
         <img
           src="assets/images/hero-biblioteca-villa-lobos.jpg"
           alt="Fachada da Biblioteca Parque Villa-Lobos, prédio moderno cercado de gramado"
           width="1600"
           height="900"
-          data-gallery-image
+          data-hero-image
         />
         <div class="hero__card-body">
-          <h2>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
-          <p>
+          <h2 data-hero-title>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
+          <p data-hero-text>
             O equipamento, que ocupa uma área de 4 mil m², é conectado com questões de
             sustentabilidade, além de oferecer espaços para lazer, trabalho e estudo. Atingiu
             recentemente a marca de 2 milhões de usuários atendidos.
@@ -50,10 +80,35 @@
           </span>
         </div>
       </a>
+
+      <!-- Pré-visualização dos próximos banners: 3 posições fixas no
+           HTML, JS preenche com os próximos da fila (com wraparound).
+           A 3ª some via CSS no mobile (só 2 lá); no desktop as 3
+           aparecem. -->
+      <div class="hero-preview" role="list" aria-label="Próximos banners">
+        <button type="button" class="hero-preview__item" data-preview-index="0">
+          <span class="hero-preview__media">
+            <img src="" alt="" />
+          </span>
+          <span class="hero-preview__title"></span>
+        </button>
+        <button type="button" class="hero-preview__item" data-preview-index="0">
+          <span class="hero-preview__media">
+            <img src="" alt="" />
+          </span>
+          <span class="hero-preview__title"></span>
+        </button>
+        <button type="button" class="hero-preview__item" data-preview-index="0">
+          <span class="hero-preview__media">
+            <img src="" alt="" />
+          </span>
+          <span class="hero-preview__title"></span>
+        </button>
+      </div>
     </section>
 
     <!-- ===================== NOSSA ATUAÇÃO ===================== -->
-    <section class="section container snap-section" id="nossa-atuacao">
+    <section class="section container snap-section" id="nossa-atuacao" data-nav-contrast="true">
       <div class="section-title-row">
         <span class="eyebrow">nossa atuação</span>
       </div>

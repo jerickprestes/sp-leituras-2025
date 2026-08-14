@@ -125,7 +125,14 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  /* proximity, não mandatory: mandatory EXIGE que a página sempre
+     repouse num ponto de encaixe válido, inclusive no carregamento —
+     como a .hero deixou de ser um ponto válido (scroll-snap-align:
+     none no desktop), mandatory forçava a página a pular direto pra
+     próxima seção assim que carregava. proximity encaixa de forma
+     mais suave (só quando o gesto de rolagem termina perto de um
+     ponto), sem forçar essa correção. */
+  scroll-snap-type: y proximity;
 }
 
 /* Mobile: desliga o encaixe forçado do scroll-snap — estava
@@ -842,6 +849,28 @@ h1.page-title {
   justify-content: flex-start;
 }
 
+/* Desktop: desliga o encaixe do scroll-snap só na hero (as seções
+   seguintes continuam encaixando normalmente). No mobile o snap já
+   está todo desligado (ver @media max-width:719px mais abaixo), então
+   isso é redundante lá — daí o min-width aqui. */
+@media (min-width: 720px) {
+  .hero {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+}
+
+/* Mobile: min-height (não height fixo) — desde que a prévia dos
+   próximos banners foi adicionada abaixo do card, o conteúdo do hero
+   passou a ser variável; travar em 100vh exatos arriscava cortar a
+   prévia em telas mais baixas. min-height preserva o "ocupa a tela
+   toda" sem cortar nada. */
+@media (max-width: 719px) {
+  .hero {
+    min-height: 100vh;
+  }
+}
+
 .hero__eyebrow-row {
   display: flex;
   align-items: center;
@@ -930,7 +959,98 @@ h1.page-title {
   overflow: hidden;
 }
 
+/* ---- Prévia dos próximos banners do carrossel ---- */
+.hero-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+@media (min-width: 720px) {
+  .hero-preview {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: só as 2 primeiras posições aparecem (a 3ª entra no
+   desktop). Ver JS: as 3 são sempre preenchidas, isso aqui só
+   controla quantas ficam visíveis por breakpoint. */
+.hero-preview__item:nth-child(3) {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .hero-preview__item:nth-child(3) {
+    display: flex;
+  }
+}
+
+.hero-preview__item {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hero-preview__media {
+  display: block;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: var(--color-ink);
+}
+
+.hero-preview__media img {
+  width: 100%;
+  height: 84px;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hero-preview__item:hover .hero-preview__media img {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.hero-preview__item:focus-visible .hero-preview__media {
+  outline: 3px solid var(--color-pink);
+  outline-offset: 2px;
+}
+
+.hero-preview__title {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--color-ink-70);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* ---- Nossa atuação ---- */
+/* Fundo escuro nesta seção — mesmo padrão de contraste já usado em
+   .cta-dark: texto base na cor --color-bg (creme), eyebrow mantém o
+   "_" em --color-pink, parágrafos em creme translúcido. */
+#nossa-atuacao {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+#nossa-atuacao .eyebrow {
+  color: var(--color-bg);
+}
+
+#nossa-atuacao .eyebrow::before {
+  color: var(--color-pink);
+}
+
 .atuacao-grid {
   display: grid;
   gap: 40px;
@@ -955,6 +1075,10 @@ h1.page-title {
   margin-bottom: 18px;
 }
 
+#nossa-atuacao .atuacao-grid p {
+  color: rgba(248, 243, 234, 0.72);
+}
+
 .atuacao-list {
   display: flex;
   flex-direction: column;
@@ -970,6 +1094,10 @@ h1.page-title {
   text-transform: uppercase;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--color-line);
+}
+
+#nossa-atuacao .atuacao-list li {
+  border-bottom-color: rgba(248, 243, 234, 0.25);
 }
 
 .atuacao-list li::before {
@@ -1221,6 +1349,14 @@ h1.page-title {
   grid-template-columns: repeat(2, 1fr);
 }
 
+/* Mobile: 1 card por linha (em vez de 2) — melhora leitura e
+   aproveitamento do espaço em telas estreitas. */
+@media (max-width: 719px) {
+  .premios-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (min-width: 720px) {
   .premios-grid {
     grid-template-columns: repeat(4, 1fr);
@@ -1393,6 +1529,26 @@ h1.page-title {
 .logos-row img:hover {
   opacity: 1;
   filter: grayscale(0);
+}
+
+/* Ajuste exclusivo mobile — .logos-block/.logos-row só existem na
+   seção de Patrocinadores/parceiros, então o escopo já fica
+   naturalmente restrito a ela. */
+@media (max-width: 719px) {
+  .logos-block {
+    padding-block: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    justify-content: space-evenly;
+  }
+
+  .logos-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 28px 80px;
+  }
 }
 
 /* ---- CTA patrocinador (dark) ---- */
@@ -2206,17 +2362,26 @@ h1.page-title {
   gap: 8px;
   color: var(--color-ink);
   z-index: 90;
-  /* Escondido por padrão — só aparece na última seção (.is-footer),
-     como um "voltar ao topo". O estado já é controlado pelo
-     IntersectionObserver existente em site-interactions.js. */
-  opacity: 0;
-  pointer-events: none;
+  /* Desktop: sempre visível. No mobile isso é sobrescrito abaixo
+     (escondido por padrão, só aparece na última seção). */
+  opacity: 1;
+  pointer-events: auto;
   transition: color 0.25s ease, opacity 0.25s ease;
 }
 
-.section-nav.is-footer {
-  opacity: 1;
-  pointer-events: auto;
+/* Mobile: escondido por padrão — só aparece na última seção
+   (.is-footer), como um "voltar ao topo". O estado é controlado pelo
+   IntersectionObserver existente em site-interactions.js. */
+@media (max-width: 719px) {
+  .section-nav {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .section-nav.is-footer {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .section-nav__arrow {
