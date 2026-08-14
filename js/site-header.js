@@ -97,6 +97,22 @@ class SiteHeader extends HTMLElement {
     // seção seguinte. --header-h é usada como scroll-margin-top em
     // .snap-section (ver style.css) para compensar isso. Atualiza em
     // tempo real porque a altura muda entre header cheio e compacto.
+    //
+    // IMPORTANTE: define o valor de forma SÍNCRONA aqui embaixo, na
+    // hora. O callback inicial do ResizeObserver roda de forma
+    // assíncrona (depois do layout, antes do próximo paint) — existe
+    // uma janela pequena logo no carregamento em que --header-h ainda
+    // vale 0px (o padrão em :root). Se o navegador calcular algum
+    // ponto de encaixe do scroll-snap nessa janela, ele trava numa
+    // posição sem descontar a altura do header, e o header (sticky)
+    // fica por cima do topo da primeira seção. Medir aqui, de forma
+    // síncrona, elimina essa corrida; o ResizeObserver abaixo só
+    // cuida das mudanças SEGUINTES (header cheio → compacto, resize).
+    document.documentElement.style.setProperty(
+      "--header-h",
+      `${wrapper.offsetHeight}px`
+    );
+
     if ("ResizeObserver" in window) {
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -107,11 +123,6 @@ class SiteHeader extends HTMLElement {
         }
       });
       resizeObserver.observe(wrapper);
-    } else {
-      document.documentElement.style.setProperty(
-        "--header-h",
-        `${wrapper.offsetHeight}px`
-      );
     }
   }
 }

@@ -302,9 +302,17 @@ h1.page-title {
 }
 
 .section-lede {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 1.05rem;
   color: var(--color-ink-70);
   max-width: 46ch;
+}
+
+.section-lede svg {
+  flex-shrink: 0;
+  color: var(--color-pink);
 }
 
 .mono-label {
@@ -716,6 +724,9 @@ h1.page-title {
    ========================================================================== */
 .hero {
   padding-block: 40px 64px;
+  /* Exceção ao padrão de .snap-section (center): a hero fica
+     ancorada no topo, não centralizada verticalmente. */
+  justify-content: flex-start;
 }
 
 .hero__eyebrow-row {
@@ -723,6 +734,23 @@ h1.page-title {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+}
+
+.hero__nav {
+  display: flex;
+  gap: 8px;
+}
+
+.hero__nav-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink);
 }
 
 .hero__card {
@@ -735,9 +763,14 @@ h1.page-title {
 
 .hero__card img {
   width: 100%;
-  height: min(60vw, 460px);
+  height: min(60vw, 600px);
   object-fit: cover;
   opacity: 0.82;
+  transition: opacity 0.25s ease;
+}
+
+.hero__card img.is-fading {
+  opacity: 0;
 }
 
 .hero__card-body {
@@ -1015,9 +1048,49 @@ h1.page-title {
 }
 
 /* ---- Reconhecimento e prêmios ---- */
+.premios-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fundo em destaque: uma única camada reaproveitada para os 4 cards —
+   o JS troca a src e alterna .is-visible ao passar o mouse em cada
+   .premio-card (data-bg-image). Ocupa a seção inteira (inset:0 no
+   contêiner posicionado mais próximo, que é a própria .premios-section).
+   Sem véu: a foto aparece pura, sem tingimento por cima. */
+.premios-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.35s ease;
+}
+
+.premios-bg.is-visible {
+  opacity: 1;
+}
+
+.premios-bg__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Conteúdo real da seção precisa ficar acima da camada de fundo. */
+.premios-section .section-title-row,
+.premios-section .premios-grid {
+  position: relative;
+  z-index: 1;
+}
+
 .premios-grid {
   display: grid;
-  gap: 28px;
+  /* Gap maior que o padrão do site: dá espaço suficiente pro blur de
+     --shadow-card (40px) não se sobrepor à sombra do card vizinho
+     quando nenhum hover está ativo. */
+  gap: 40px;
   grid-template-columns: repeat(2, 1fr);
 }
 
@@ -1028,7 +1101,19 @@ h1.page-title {
 }
 
 .premio-card {
-  text-align: center;
+  position: relative;
+  text-align: left;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: opacity 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
+}
+
+.premio-card:focus-visible {
+  outline: 3px solid var(--color-pink);
+  outline-offset: 3px;
 }
 
 .premio-card__icon {
@@ -1036,7 +1121,7 @@ h1.page-title {
   height: 68px;
   border-radius: 50%;
   border: 1.5px solid var(--color-ink);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
@@ -1053,6 +1138,98 @@ h1.page-title {
 .premio-card p {
   font-size: 0.86rem;
   color: var(--color-ink-70);
+}
+
+/* ---- Caixa de dica "clique para saber mais" ----
+   Só em telas com hover real de verdade (mouse) — em touch não existe
+   um estado de "passar o mouse antes de tocar", então a dica não faz
+   sentido lá; o clique/toque continua funcionando normalmente. */
+.premio-card__hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.premio-card__hint svg {
+  color: var(--color-pink);
+}
+
+.premio-card__hint span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .premio-card:hover .premio-card__hint {
+    opacity: 1;
+  }
+}
+
+/* Card já ativo (clicado): a dica não aparece mais, mesmo em hover. */
+.premio-card.is-active .premio-card__hint {
+  opacity: 0 !important;
+}
+
+/* ---- Conteúdo extra revelado ao clicar (3 imagens 1:1 + texto) ----
+   Funciona por clique/toque em qualquer dispositivo — diferente da
+   dica acima, essa parte não depende de hover. */
+.premio-card__extra {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+}
+
+.premio-card.is-active .premio-card__extra {
+  max-height: 420px;
+  opacity: 1;
+  margin-top: 18px;
+}
+
+.premio-card__extra-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.premio-card__extra-images img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.premio-card__extra-text {
+  font-size: 0.82rem;
+  color: var(--color-ink-70);
+}
+
+/* ---- Estado ativo (clicado): esconde os outros cards e destaca o
+   selecionado. Funciona em qualquer dispositivo, já que depende de
+   clique/toque — não de hover. ---- */
+.premios-grid.has-active .premio-card:not(.is-active) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.premios-grid .premio-card.is-active {
+  padding: 32px 26px;
 }
 
 /* ---- Logos strips ---- */
