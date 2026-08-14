@@ -128,6 +128,16 @@ html {
   scroll-snap-type: y mandatory;
 }
 
+/* Mobile: desliga o encaixe forçado do scroll-snap — estava
+   atrapalhando a experiência de rolagem em telas pequenas. As seções
+   continuam ocupando 100vh normalmente, só a rolagem deixa de "travar"
+   em cada uma. */
+@media (max-width: 719px) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
 body {
   margin: 0;
   background: var(--color-bg);
@@ -414,7 +424,7 @@ h1.page-title {
 
 .site-header__top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   padding-top: 20px;
@@ -456,6 +466,11 @@ h1.page-title {
   display: flex;
   align-items: center;
   gap: 14px;
+  /* justify-content: space-between no pai só funciona com 2+ filhos
+     visíveis — no mobile, .site-header__nav some (display:none) e
+     sobra só este bloco, que sem isso cola na esquerda em vez da
+     direita. margin-left:auto resolve nos dois cenários. */
+  margin-left: auto;
 }
 
 .site-header__icon-btn {
@@ -489,7 +504,9 @@ h1.page-title {
 }
 
 .site-header__brand {
-  padding-block: 18px 22px;
+  /* padding-top igual ao de .site-header__top (20px), pra logo e
+     ícones começarem no mesmo topo, cada um no seu próprio bloco. */
+  padding-block: 20px 22px;
   /* Usa 2vw para garantir que o logo sempre "quebre" a margem e fique mais próximo da borda esquerda que o resto do site */
   padding-left: clamp(16px, 2vw, 30px);
   transition: padding-block 0.25s ease;
@@ -540,23 +557,103 @@ h1.page-title {
   margin: 0 0 0 0;
 }
 
-/* Mobile dropdown nav */
+/* ---- Layout mobile: logo à esquerda, ícones à direita ----
+   Abaixo de 960px o header vira um grid de 2 colunas (marca / ações)
+   + a régua por baixo ocupando as duas colunas. .site-header__top
+   vira "display:contents" pra sumir como caixa (ele tem a classe
+   .container, que daria padding-inline duplicado) e deixar seus
+   filhos (nav — some via display:none — e ações) participarem
+   direto do grid do .site-header. Isso substitui a tentativa anterior
+   com flex-direction:row, que quebrava porque os 4 filhos diretos do
+   .site-header (top, brand, hr, mobile-nav) tentavam entrar todos na
+   mesma linha horizontal. Com grid-template-areas cada um vai pro
+   lugar certo, e o drawer (mobile-nav) fica de fora do fluxo por ser
+   position:fixed.
+   IMPORTANTE: este bloco precisa vir DEPOIS das regras "normais" de
+   .site-header__top / __brand / __actions / __rule acima — mesma
+   especificidade, então quem vier por último no arquivo é que vale
+   dentro da media query. */
+@media (max-width: 959px) {
+  .site-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "brand actions"
+      "rule  rule";
+    align-items: center;
+  }
+
+  .site-header__top {
+    display: contents;
+  }
+
+  .site-header__brand {
+    grid-area: brand;
+    padding-block: 14px;
+  }
+
+  .site-header.is-compact .site-header__brand {
+    padding-block: 8px;
+  }
+
+  .site-header__actions {
+    grid-area: actions;
+    margin-left: 0;
+    padding-right: clamp(16px, 2vw, 30px);
+  }
+
+  .site-header__rule {
+    grid-area: rule;
+  }
+}
+
+/* ---- Navigation Drawer (menu mobile) ----
+   Painel fixo que desliza da direita, por cima do conteúdo, com
+   overlay escurecido atrás. Fica sempre no DOM como display:flex
+   (não display:none) pra dar pra animar o transform; quando fechado
+   fica fora da tela (translateX) e com visibility:hidden — a
+   transition de visibility tem delay pra só "sumir de verdade"
+   depois que o slide-out termina, evitando foco/tab em conteúdo
+   invisível. */
 .site-header__mobile-nav {
-  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
   flex-direction: column;
-  padding: 8px 20px 20px;
+  width: min(78vw, 320px);
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--color-bg);
+  padding: 20px 20px 32px;
   gap: 4px;
-  border-top: 1px solid var(--color-line);
+  box-shadow: -8px 0 24px rgba(33, 29, 29, 0.18);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.28s ease, visibility 0s linear 0.28s;
 }
 
 .site-header.is-open .site-header__mobile-nav {
-  display: flex;
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.28s ease;
 }
 
 @media (min-width: 960px) {
-  .site-header__mobile-nav {
+  .site-header__mobile-nav,
+  .site-header__drawer-overlay {
     display: none !important;
   }
+}
+
+.site-header__drawer-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  padding: 8px;
+  margin-bottom: 12px;
+  color: var(--color-ink);
 }
 
 .site-header__mobile-nav a {
@@ -571,6 +668,22 @@ h1.page-title {
 
 .site-header__mobile-nav a.site-header__donate {
   color: var(--color-pink);
+}
+
+/* Overlay escurecido atrás do drawer — fecha ao clicar fora */
+.site-header__drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: rgba(33, 29, 29, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.site-header.is-open .site-header__drawer-overlay {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ==========================================================================
@@ -769,6 +882,15 @@ h1.page-title {
   transition: opacity 0.25s ease;
 }
 
+/* Mobile: banner ocupa mais espaço vertical pra imagem aparecer melhor
+   (60vw fica baixo demais em telas estreitas). */
+@media (max-width: 719px) {
+  .hero__card img {
+    height: 65vh;
+    min-height: 380px;
+  }
+}
+
 .hero__card img.is-fading {
   opacity: 0;
 }
@@ -779,6 +901,11 @@ h1.page-title {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  /* flex-start (em vez do stretch padrão): sem isso, o botão "saiba
+     mais" — sem largura própria definida — esticava e ocupava 100%
+     da largura do card. Com flex-start, ele volta a ter o tamanho
+     do próprio conteúdo, do mesmo jeito que o texto acima dele. */
+  align-items: flex-start;
   padding: 28px 24px 32px;
   background: linear-gradient(
     180deg,
@@ -2079,7 +2206,17 @@ h1.page-title {
   gap: 8px;
   color: var(--color-ink);
   z-index: 90;
-  transition: color 0.25s ease;
+  /* Escondido por padrão — só aparece na última seção (.is-footer),
+     como um "voltar ao topo". O estado já é controlado pelo
+     IntersectionObserver existente em site-interactions.js. */
+  opacity: 0;
+  pointer-events: none;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.section-nav.is-footer {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .section-nav__arrow {

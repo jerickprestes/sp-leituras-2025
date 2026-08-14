@@ -55,7 +55,15 @@ class SiteHeader extends HTMLElement {
 
         <hr class="site-header__rule" />
 
-        <nav class="site-header__mobile-nav" aria-label="Navegação principal (mobile)">
+        <div class="site-header__drawer-overlay"></div>
+
+        <nav class="site-header__mobile-nav" aria-label="Navegação principal (mobile)" role="dialog" aria-modal="true">
+          <button class="site-header__drawer-close" type="button" aria-label="Fechar menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
           ${navLinksHTML}
           <a href="${base}contato.html" class="site-header__donate">Doe agora</a>
         </nav>
@@ -64,12 +72,59 @@ class SiteHeader extends HTMLElement {
 
     const wrapper = this.querySelector(".site-header");
     const menuBtn = this.querySelector(".site-header__menu-btn");
+    const drawer = this.querySelector(".site-header__mobile-nav");
+    const drawerOverlay = this.querySelector(".site-header__drawer-overlay");
+    const drawerCloseBtn = this.querySelector(".site-header__drawer-close");
+
+    // ---- Navigation Drawer (menu mobile) ----
+    // Painel deslizando da lateral (não mais dropdown empurrando o
+    // conteúdo). Abre/fecha pelo botão hambúrguer, pelo X dentro do
+    // drawer, clicando no overlay escurecido, ou apertando Esc.
+    const openDrawer = () => {
+      wrapper.classList.add("is-open");
+      menuBtn.setAttribute("aria-expanded", "true");
+      menuBtn.setAttribute("aria-label", "Fechar menu");
+      document.body.style.overflow = "hidden";
+      if (drawerCloseBtn) drawerCloseBtn.focus();
+    };
+
+    const closeDrawer = () => {
+      wrapper.classList.remove("is-open");
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.setAttribute("aria-label", "Abrir menu");
+      document.body.style.overflow = "";
+      menuBtn.focus();
+    };
 
     menuBtn.addEventListener("click", () => {
-      const isOpen = wrapper.classList.toggle("is-open");
-      menuBtn.setAttribute("aria-expanded", String(isOpen));
-      menuBtn.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+      if (wrapper.classList.contains("is-open")) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
     });
+
+    if (drawerCloseBtn) {
+      drawerCloseBtn.addEventListener("click", closeDrawer);
+    }
+
+    if (drawerOverlay) {
+      drawerOverlay.addEventListener("click", closeDrawer);
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && wrapper.classList.contains("is-open")) {
+        closeDrawer();
+      }
+    });
+
+    // Clicar num link do drawer também fecha (evita o painel ficar
+    // aberto por cima da página de destino/âncora).
+    if (drawer) {
+      drawer.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeDrawer);
+      });
+    }
 
     // ---- Header compacto a partir da 2ª seção (.snap-section) ----
     // Fica encapsulado aqui dentro (em vez de um script externo) porque
