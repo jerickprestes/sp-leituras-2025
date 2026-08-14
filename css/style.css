@@ -321,7 +321,7 @@ h1.page-title {
   align-items: center;
   gap: 10px;
   padding: 15px 26px;
-  border-radius: var(--radius-pill);
+  border-radius: 2px;
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.85rem;
@@ -876,19 +876,80 @@ h1.page-title {
   color: var(--color-ink);
 }
 
-.equip-card__head {
+/* ---- Sanfona de equipamentos ---- */
+.equip-accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.equip-accordion-item {
+  border-top: 1px solid var(--color-line);
+}
+
+.equip-accordion-item:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.equip-accordion-item__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  gap: 12px;
+  padding-block: 14px;
 }
 
-.equip-card__nav {
+.equip-accordion-item__trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-70);
+  transition: color 0.15s ease;
+}
+
+.equip-accordion-item__trigger::before {
+  content: "_";
+  color: var(--color-ink-50);
+}
+
+.equip-accordion-item__trigger:hover {
+  color: var(--color-ink);
+}
+
+/* Item aberto reaproveita o estilo .eyebrow já aplicado via JS
+   (classe "eyebrow" alternada entre triggers) */
+.equip-accordion-item__trigger.eyebrow {
+  color: var(--color-ink);
+}
+
+.equip-accordion-item__trigger.eyebrow::before {
+  color: var(--color-pink);
+}
+
+/* Setas de navegação da galeria de cada item — só fazem sentido
+   visualmente enquanto o item está aberto */
+.equip-accordion-item__nav {
   display: flex;
   gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
-.equip-card__nav button {
+.equip-accordion-item.is-open .equip-accordion-item__nav {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.equip-accordion-item__nav-btn {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -897,34 +958,60 @@ h1.page-title {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-ink);
 }
 
-.equip-card__media {
+.equip-accordion-item__body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+}
+
+.equip-accordion-item.is-open .equip-accordion-item__body {
+  max-height: 640px;
+  opacity: 1;
+  padding-bottom: 18px;
+}
+
+.equip-accordion-item__media {
   border-radius: var(--radius-sm);
   overflow: hidden;
   margin-bottom: 16px;
 }
 
-.equip-card p {
-  color: var(--color-ink-70);
-  font-size: 0.92rem;
-  margin-bottom: 16px;
+.equip-accordion-item__media img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.25s ease;
 }
 
-.equip-card__list li {
+.equip-accordion-item__media img.is-fading {
+  opacity: 0;
+}
+
+.equip-accordion-item__body p {
+  color: var(--color-ink-70);
+  font-size: 0.92rem;
+  margin-bottom: 12px;
+}
+
+.equip-accordion-item__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding-block: 10px;
-  border-top: 1px solid var(--color-line);
-  display: flex;
-  justify-content: space-between;
+  color: var(--color-pink);
 }
 
-.equip-card__list li:last-child {
-  border-bottom: 1px solid var(--color-line);
+.equip-accordion-item__link:hover {
+  color: var(--color-pink-dark);
 }
 
 /* ---- Reconhecimento e prêmios ---- */
@@ -971,6 +1058,9 @@ h1.page-title {
 /* ---- Logos strips ---- */
 .logos-block {
   padding-block: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .logos-block .mono-label {

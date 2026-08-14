@@ -94,35 +94,186 @@
         </div>
 
         <div class="equip-card">
-          <div class="equip-card__head">
-            <span class="eyebrow">siseb</span>
-            <div class="equip-card__nav">
-              <button type="button" aria-label="Equipamento anterior">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button type="button" aria-label="Próximo equipamento">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="equip-card__media">
-            <img
-              src="assets/images/equipamentos-biblioteca-interior.jpg"
-              alt="Interior de biblioteca com estantes de livros e área de leitura"
-              width="1000"
-              height="666"
-              loading="lazy"
-            />
-          </div>
-          <p>
-            O Sistema Estadual de Bibliotecas Públicas de São Paulo integra bibliotecas públicas
-            municipais de São Paulo e trabalha em parceria com a SP Leituras.
-          </p>
-          <ul class="equip-card__list">
-            <li><span>_biblioteca de são paulo</span> <span>›</span></li>
-            <li><span>_biblioteca parque villa-lobos</span> <span>›</span></li>
-            <li><a href="equipamento.html" style="color:inherit;display:flex;justify-content:space-between;width:100%;"><span>_biblion</span> <span>›</span></a></li>
-            <li><span>_centro cultural áuthos pagano</span> <span>›</span></li>
+          <ul class="equip-accordion" data-equip-accordion>
+            <li class="equip-accordion-item is-open">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger eyebrow" aria-expanded="true">
+                  siseb
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/logo-otis.webp"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="Interior de biblioteca com estantes de livros e área de leitura"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  O Sistema Estadual de Bibliotecas Públicas de São Paulo integra bibliotecas públicas
+                  municipais de São Paulo e trabalha em parceria com a SP Leituras.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  _biblioteca de são paulo
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/logo-natura.webp"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="Biblioteca de São Paulo"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por texto e fotos reais da Biblioteca de São Paulo -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  _biblioteca parque villa-lobos
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/logo-vivo.webp"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/hero-biblioteca-villa-lobos.jpg"
+                    alt="Fachada da Biblioteca Parque Villa-Lobos"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por texto e fotos reais da Biblioteca Parque Villa-Lobos -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  _biblion
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/logo-globo.webp"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="BibliON"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por resumo real do BibliON (a página completa já existe) -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="equipamento.html" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  _centro cultural áuthos pagano
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/logo-canon.webp"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="Centro Cultural Áuthos Pagano"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por texto e fotos reais do Centro Cultural Áuthos Pagano -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
@@ -167,30 +318,32 @@
 
     <!-- ===================== PATROCINADORES / PARCEIROS ===================== -->
     <section class="container logos-block snap-section">
-      <span class="mono-label">_alguns patrocinadores</span>
-      <div class="logos-row">
-        <img src="assets/images/logo-colegio-vital-brazil.webp" alt="Colégio Vital Brazil" width="140" height="63" loading="lazy" />
-        <img src="assets/images/logo-stima-energia.webp" alt="Stima Energia" width="140" height="67" loading="lazy" />
-        <img src="assets/images/logo-empiricus.webp" alt="Empiricus" width="140" height="33" loading="lazy" />
-        <img src="assets/images/logo-wtw.webp" alt="WTW" width="140" height="45" loading="lazy" />
-        <img src="assets/images/logo-otis.webp" alt="Otis" width="140" height="46" loading="lazy" />
-        <img src="assets/images/logo-velt-partners.webp" alt="Velt Partners" width="140" height="49" loading="lazy" />
+      <div class="logos-group">
+        <span class="mono-label">_alguns patrocinadores</span>
+        <div class="logos-row">
+          <img src="assets/images/logo-colegio-vital-brazil.webp" alt="Colégio Vital Brazil" width="140" height="63" loading="lazy" />
+          <img src="assets/images/logo-stima-energia.webp" alt="Stima Energia" width="140" height="67" loading="lazy" />
+          <img src="assets/images/logo-empiricus.webp" alt="Empiricus" width="140" height="33" loading="lazy" />
+          <img src="assets/images/logo-wtw.webp" alt="WTW" width="140" height="45" loading="lazy" />
+          <img src="assets/images/logo-otis.webp" alt="Otis" width="140" height="46" loading="lazy" />
+          <img src="assets/images/logo-velt-partners.webp" alt="Velt Partners" width="140" height="49" loading="lazy" />
+        </div>
       </div>
-    </section>
 
-    <section class="container logos-block section--tight snap-section">
-      <span class="mono-label">_alguns de nossos parceiros</span>
-      <div class="logos-row">
-        <img src="assets/images/logo-motorola.webp" alt="Motorola" width="120" height="80" loading="lazy" />
-        <img src="assets/images/logo-vr-beneficios.webp" alt="VR Benefícios" width="80" height="80" loading="lazy" />
-        <img src="assets/images/logo-pampers.webp" alt="Pampers" width="120" height="70" loading="lazy" />
-        <img src="assets/images/logo-mitsubishi.webp" alt="Mitsubishi" width="90" height="99" loading="lazy" />
-        <img src="assets/images/logo-volkswagen.webp" alt="Volkswagen" width="80" height="80" loading="lazy" />
-        <img src="assets/images/logo-natura.webp" alt="Natura" width="100" height="76" loading="lazy" />
-        <img src="assets/images/logo-prefeitura-votuporanga.webp" alt="Prefeitura de Votuporanga" width="150" height="76" loading="lazy" />
-        <img src="assets/images/logo-canon.webp" alt="Canon" width="140" height="29" loading="lazy" />
-        <img src="assets/images/logo-vivo.webp" alt="Vivo" width="140" height="41" loading="lazy" />
-        <img src="assets/images/logo-globo.webp" alt="Globo" width="80" height="80" loading="lazy" />
+      <div class="logos-group">
+        <span class="mono-label">_alguns de nossos parceiros</span>
+        <div class="logos-row">
+          <img src="assets/images/logo-motorola.webp" alt="Motorola" width="120" height="80" loading="lazy" />
+          <img src="assets/images/logo-vr-beneficios.webp" alt="VR Benefícios" width="80" height="80" loading="lazy" />
+          <img src="assets/images/logo-pampers.webp" alt="Pampers" width="120" height="70" loading="lazy" />
+          <img src="assets/images/logo-mitsubishi.webp" alt="Mitsubishi" width="90" height="99" loading="lazy" />
+          <img src="assets/images/logo-volkswagen.webp" alt="Volkswagen" width="80" height="80" loading="lazy" />
+          <img src="assets/images/logo-natura.webp" alt="Natura" width="100" height="76" loading="lazy" />
+          <img src="assets/images/logo-prefeitura-votuporanga.webp" alt="Prefeitura de Votuporanga" width="150" height="76" loading="lazy" />
+          <img src="assets/images/logo-canon.webp" alt="Canon" width="140" height="29" loading="lazy" />
+          <img src="assets/images/logo-vivo.webp" alt="Vivo" width="140" height="41" loading="lazy" />
+          <img src="assets/images/logo-globo.webp" alt="Globo" width="80" height="80" loading="lazy" />
+        </div>
       </div>
     </section>
 

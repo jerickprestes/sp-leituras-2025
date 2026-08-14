@@ -77,4 +77,84 @@
       footerObserver.observe(lastSection);
     }
   }
+
+  /* ---- Sanfona de equipamentos (#equipamentos) ---- */
+  var equipItems = Array.prototype.slice.call(
+    document.querySelectorAll(".equip-accordion-item")
+  );
+
+  var closeEquipItem = function (item) {
+    var trigger = item.querySelector(".equip-accordion-item__trigger");
+    item.classList.remove("is-open");
+    if (trigger) {
+      trigger.classList.remove("eyebrow");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  };
+
+  var openEquipItem = function (item) {
+    var trigger = item.querySelector(".equip-accordion-item__trigger");
+    item.classList.add("is-open");
+    if (trigger) {
+      trigger.classList.add("eyebrow");
+      trigger.setAttribute("aria-expanded", "true");
+    }
+  };
+
+  equipItems.forEach(function (item) {
+    var trigger = item.querySelector(".equip-accordion-item__trigger");
+    var body = item.querySelector(".equip-accordion-item__body");
+    var image = item.querySelector("[data-gallery-image]");
+    var navButtons = item.querySelectorAll("[data-gallery-nav]");
+
+    var gallery = [];
+    if (body) {
+      try {
+        gallery = JSON.parse(body.getAttribute("data-gallery") || "[]");
+      } catch (e) {
+        gallery = [];
+      }
+    }
+    var galleryIndex = 0;
+
+    if (trigger) {
+      trigger.addEventListener("click", function () {
+        var isCurrentlyOpen = item.classList.contains("is-open");
+
+        if (isCurrentlyOpen) {
+          closeEquipItem(item);
+          return;
+        }
+
+        equipItems.forEach(function (otherItem) {
+          if (otherItem === item) {
+            openEquipItem(otherItem);
+          } else {
+            closeEquipItem(otherItem);
+          }
+        });
+      });
+    }
+
+    // Setas da galeria: não podem propagar o clique para o trigger
+    // (senão fechariam/abririam o item ao trocar de foto).
+    navButtons.forEach(function (btn) {
+      btn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        if (!image || gallery.length < 2) return;
+        var direction =
+          btn.getAttribute("data-gallery-nav") === "next" ? 1 : -1;
+
+        // Fade-out, troca a src só depois de esmaecer, depois fade-in
+        // (duração precisa bater com a transition de opacity no CSS).
+        image.classList.add("is-fading");
+        window.setTimeout(function () {
+          galleryIndex =
+            (galleryIndex + direction + gallery.length) % gallery.length;
+          image.setAttribute("src", gallery[galleryIndex]);
+          image.classList.remove("is-fading");
+        }, 250);
+      });
+    });
+  });
 })();
