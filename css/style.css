@@ -2606,10 +2606,6 @@ h1.page-title {
   order: 1;
 }
 
-.section-nav--prev:hover .section-nav__arrow {
-  transform: rotate(180deg) translateY(-10px);
-}
-
 @media (max-width: 719px) {
   .section-nav--prev {
     display: none;
@@ -2639,6 +2635,14 @@ h1.page-title {
 
 .section-nav:hover .section-nav__dot {
   background: currentColor;
+}
+
+/* Precisa vir DEPOIS de .section-nav:hover acima — mesma
+   especificidade (0,3,0) nas duas, então quem vier por último no
+   arquivo vale. Sem isso, a rotação se perde no hover e a seta volta
+   a apontar pra baixo (orientação original do SVG). */
+.section-nav--prev:hover .section-nav__arrow {
+  transform: rotate(180deg) translateY(-10px);
 }
 
 /* Contraste automático: quando a seção atrás do botão usa o mesmo
