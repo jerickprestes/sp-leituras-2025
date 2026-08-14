@@ -1047,7 +1047,7 @@ h1.page-title {
 
 .hero__nav {
   position: absolute;
-  left: 20px;
+  right: 20px;
   bottom: 20px;
   z-index: 5;
   display: flex;
@@ -1068,7 +1068,7 @@ h1.page-title {
 
 .hero__card {
   position: relative;
-  border-radius: var(--radius-lg);
+  border-radius: 20px;
   overflow: hidden;
   background: var(--color-ink);
   color: #fff;
@@ -1079,6 +1079,7 @@ h1.page-title {
   height: min(60vw, 600px);
   object-fit: cover;
   opacity: 0.82;
+  border-radius: 20px;
   transition: opacity 0.25s ease;
 }
 
@@ -1107,6 +1108,7 @@ h1.page-title {
      do próprio conteúdo, do mesmo jeito que o texto acima dele. */
   align-items: flex-start;
   padding: 28px 24px 32px;
+  border-radius: 20px;
   background: linear-gradient(
     180deg,
     rgba(20, 17, 17, 0) 40%,
