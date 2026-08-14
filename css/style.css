@@ -1367,6 +1367,7 @@ h1.page-title {
   display: inline-flex;
   align-items: baseline;
   gap: 2px;
+  text-align: left;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
