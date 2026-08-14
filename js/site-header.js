@@ -34,12 +34,12 @@ class SiteHeader extends HTMLElement {
             <a href="${base}contato.html" class="site-header__donate">Doe agora</a>
           </nav>
           <div class="site-header__actions">
-            <a class="site-header__icon-btn" href="${base}novidades.html" aria-label="Buscar no site">
+            <button type="button" class="site-header__icon-btn site-header__search-btn" aria-label="Buscar no site" aria-expanded="false">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
                 <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-            </a>
+            </button>
             <button class="site-header__menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">
               <span></span><span></span><span></span>
             </button>
@@ -54,6 +54,25 @@ class SiteHeader extends HTMLElement {
         </div>
 
         <hr class="site-header__rule" />
+
+        <div class="site-header__search-overlay"></div>
+
+        <div class="site-header__search-panel" role="dialog" aria-modal="true" aria-label="Buscar no site">
+          <form class="site-header__search-form" action="${base}novidades.html" method="get">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="site-header__search-icon">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="search" name="q" class="site-header__search-input" placeholder="Buscar notícias, páginas..." aria-label="Termo de busca" />
+            <button type="submit" class="site-header__search-submit">Buscar</button>
+          </form>
+          <button type="button" class="site-header__search-close" aria-label="Fechar busca">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
 
         <div class="site-header__drawer-overlay"></div>
 
@@ -75,12 +94,18 @@ class SiteHeader extends HTMLElement {
     const drawer = this.querySelector(".site-header__mobile-nav");
     const drawerOverlay = this.querySelector(".site-header__drawer-overlay");
     const drawerCloseBtn = this.querySelector(".site-header__drawer-close");
+    const searchBtn = this.querySelector(".site-header__search-btn");
+    const searchPanel = this.querySelector(".site-header__search-panel");
+    const searchOverlay = this.querySelector(".site-header__search-overlay");
+    const searchCloseBtn = this.querySelector(".site-header__search-close");
+    const searchInput = this.querySelector(".site-header__search-input");
 
     // ---- Navigation Drawer (menu mobile) ----
     // Painel deslizando da lateral (não mais dropdown empurrando o
     // conteúdo). Abre/fecha pelo botão hambúrguer, pelo X dentro do
     // drawer, clicando no overlay escurecido, ou apertando Esc.
     const openDrawer = () => {
+      if (wrapper.classList.contains("is-search-open")) closeSearch();
       wrapper.classList.add("is-open");
       menuBtn.setAttribute("aria-expanded", "true");
       menuBtn.setAttribute("aria-label", "Fechar menu");
@@ -125,6 +150,53 @@ class SiteHeader extends HTMLElement {
         link.addEventListener("click", closeDrawer);
       });
     }
+
+    // ---- Busca off-canvas ----
+    // Painel deslizando do topo, por cima de tudo, com overlay
+    // escurecido atrás — igual ao drawer, mas funciona em qualquer
+    // tamanho de tela (desktop, tablet, mobile), não só mobile.
+    // Abre/fecha pelo botão da lupa, pelo X, clicando fora, ou Esc.
+    // Sem backend de busca de verdade ainda: o form só navega para
+    // novidades.html com o termo em ?q= (placeholder pra quando
+    // houver busca de verdade).
+    const openSearch = () => {
+      if (wrapper.classList.contains("is-open")) closeDrawer();
+      wrapper.classList.add("is-search-open");
+      if (searchBtn) searchBtn.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      if (searchInput) searchInput.focus();
+    };
+
+    const closeSearch = () => {
+      wrapper.classList.remove("is-search-open");
+      if (searchBtn) searchBtn.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      if (searchBtn) searchBtn.focus();
+    };
+
+    if (searchBtn) {
+      searchBtn.addEventListener("click", () => {
+        if (wrapper.classList.contains("is-search-open")) {
+          closeSearch();
+        } else {
+          openSearch();
+        }
+      });
+    }
+
+    if (searchCloseBtn) {
+      searchCloseBtn.addEventListener("click", closeSearch);
+    }
+
+    if (searchOverlay) {
+      searchOverlay.addEventListener("click", closeSearch);
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && wrapper.classList.contains("is-search-open")) {
+        closeSearch();
+      }
+    });
 
     // ---- Header compacto a partir da 2ª seção (.snap-section) ----
     // Fica encapsulado aqui dentro (em vez de um script externo) porque

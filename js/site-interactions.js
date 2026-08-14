@@ -7,6 +7,35 @@
 (function () {
   "use strict";
 
+  // ---- Tela de carregamento ----
+  // Fica visível por pelo menos 2s, mesmo que a página carregue mais
+  // rápido que isso — e continua visível além disso se a página
+  // demorar mais, só some quando as duas condições baterem: tempo
+  // mínimo passado E "load" (página/imagens/fontes) já disparado.
+  (function setupSiteLoader() {
+    var loader = document.getElementById("siteLoader");
+    if (!loader) return;
+
+    var MIN_DURATION = 2000;
+    var start = Date.now();
+    document.documentElement.classList.add("has-loader");
+
+    var hideLoader = function () {
+      var elapsed = Date.now() - start;
+      var remaining = Math.max(MIN_DURATION - elapsed, 0);
+      window.setTimeout(function () {
+        loader.classList.add("is-hidden");
+        document.documentElement.classList.remove("has-loader");
+      }, remaining);
+    };
+
+    if (document.readyState === "complete") {
+      hideLoader();
+    } else {
+      window.addEventListener("load", hideLoader);
+    }
+  })();
+
   // ---- Corrige desalinhamento de scroll no carregamento ----
   // As fontes web (Poppins/Inter/Space Mono) carregam de forma
   // assíncrona; até lá, o header renderiza com a fonte de fallback,
@@ -169,6 +198,7 @@
 
   /* ---- Paginação entre seções (seta + bolinha) ---- */
   var sectionNav = document.getElementById("sectionNav");
+  var sectionNavPrev = document.getElementById("sectionNavPrev");
   var snapSections = Array.prototype.slice.call(
     document.querySelectorAll(".snap-section")
   );
@@ -195,9 +225,23 @@
       });
     });
 
+    // Botão de subir uma seção (desktop only, ver CSS) — vai pra
+    // seção anterior, com wraparound (da primeira volta pra última).
+    if (sectionNavPrev) {
+      sectionNavPrev.addEventListener("click", function () {
+        var prevIndex =
+          (getCurrentIndex() - 1 + snapSections.length) % snapSections.length;
+        snapSections[prevIndex].scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+
     if ("IntersectionObserver" in window) {
       // Troca de cor por contraste: ativa quando a seção visível tem
       // data-nav-contrast="true" (fundo na mesma cor --color-ink do botão).
+      // Sincroniza os dois botões (subir/descer) quando o de subir existe.
       var contrastSections = snapSections.filter(function (section) {
         return section.hasAttribute("data-nav-contrast");
       });
@@ -207,6 +251,12 @@
           function (entries) {
             entries.forEach(function (entry) {
               sectionNav.classList.toggle("is-on-dark", entry.isIntersecting);
+              if (sectionNavPrev) {
+                sectionNavPrev.classList.toggle(
+                  "is-on-dark",
+                  entry.isIntersecting
+                );
+              }
             });
           },
           { threshold: 0.6 }
@@ -216,8 +266,10 @@
         });
       }
 
-      // No rodapé (última seção), o botão vira "voltar ao topo":
-      // troca o ícone (seta pra cima, bolinha em cima) via .is-footer.
+      // No rodapé (última seção), o botão de descer vira "voltar ao
+      // topo": troca o ícone (seta pra cima, bolinha em cima) via
+      // .is-footer. O botão de subir não participa disso — ele
+      // sempre significa "seção anterior".
       var footerObserver = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
@@ -257,6 +309,7 @@
         otherCard.setAttribute("aria-pressed", "false");
       });
       premiosGrid.classList.remove("has-active");
+      premiosSection.classList.remove("has-active");
       premiosBg.classList.remove("is-visible");
     };
 
@@ -265,6 +318,7 @@
       card.classList.add("is-active");
       card.setAttribute("aria-pressed", "true");
       premiosGrid.classList.add("has-active");
+      premiosSection.classList.add("has-active");
       premiosBgImage.setAttribute("src", bgImage);
       premiosBg.classList.add("is-visible");
     };
@@ -355,4 +409,78 @@
 
     setupFadeGallery(navButtons, image, gallery);
   });
+
+  /* ---- Fade-in sequencial dos elementos de cada seção ----
+     Primeira versão (heurística, ajustável depois): pega os filhos
+     diretos de cada .snap-section como "elementos"; se um desses
+     filhos for um grid/lista conhecida (cards, colunas, etc.), usa os
+     ITENS dela em vez do grid inteiro, pra ganhar granularidade (ex.:
+     cada premio-card aparece um de cada vez, não o grid inteiro de
+     uma vez). Dispara quando a seção entra em ~25% na tela. */
+  (function setupSectionFadeIn() {
+    if (!("IntersectionObserver" in window)) return;
+
+    var sections = Array.prototype.slice.call(
+      document.querySelectorAll(".snap-section")
+    );
+    if (!sections.length) return;
+
+    var GRID_SELECTORS = [
+      ".premios-grid",
+      ".atuacao-grid",
+      ".logos-block",
+      ".equip-grid",
+      ".cta-dark-grid",
+      ".hero-preview",
+    ];
+
+    var matches = function (el, selector) {
+      return (
+        el.matches ||
+        el.msMatchesSelector ||
+        el.webkitMatchesSelector
+      ).call(el, selector);
+    };
+
+    sections.forEach(function (section) {
+      var items = [];
+
+      Array.prototype.forEach.call(section.children, function (child) {
+        if (child.hasAttribute("hidden")) return;
+        if (child.classList.contains("premios-bg")) return;
+
+        var isGridLike = GRID_SELECTORS.some(function (selector) {
+          return matches(child, selector);
+        });
+
+        if (isGridLike && child.children.length) {
+          Array.prototype.forEach.call(child.children, function (grandchild) {
+            items.push(grandchild);
+          });
+        } else {
+          items.push(child);
+        }
+      });
+
+      if (!items.length) return;
+
+      items.forEach(function (item, index) {
+        item.classList.add("fade-item");
+        item.style.transitionDelay = index * 90 + "ms";
+      });
+
+      var sectionObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              section.classList.add("is-visible");
+              sectionObserver.unobserve(section);
+            }
+          });
+        },
+        { threshold: 0.25 }
+      );
+      sectionObserver.observe(section);
+    });
+  })();
 })();

@@ -11,6 +11,14 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <!-- Tela de carregamento: fica visível pelo menos 2s (ver JS), logo
+       piscando (opacidade alternando). Só existe nesta página por
+       enquanto — se quiser em todas as páginas do site, é só pedir
+       que eu replico. -->
+  <div id="siteLoader" class="site-loader" aria-hidden="true">
+    <span class="site-loader__logo">spleituras</span>
+  </div>
+
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
   <site-header active="institucional"></site-header>
@@ -198,7 +206,7 @@
             <li class="equip-accordion-item">
               <div class="equip-accordion-item__head">
                 <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
-                  _biblioteca de são paulo
+                  biblioteca de são paulo
                 </button>
                 <div class="equip-accordion-item__nav">
                   <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
@@ -234,7 +242,7 @@
             <li class="equip-accordion-item">
               <div class="equip-accordion-item__head">
                 <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
-                  _biblioteca parque villa-lobos
+                  biblioteca parque villa-lobos
                 </button>
                 <div class="equip-accordion-item__nav">
                   <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
@@ -270,7 +278,7 @@
             <li class="equip-accordion-item">
               <div class="equip-accordion-item__head">
                 <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
-                  _biblion
+                  biblion
                 </button>
                 <div class="equip-accordion-item__nav">
                   <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
@@ -306,7 +314,7 @@
             <li class="equip-accordion-item">
               <div class="equip-accordion-item__head">
                 <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
-                  _centro cultural áuthos pagano
+                  centro cultural áuthos pagano
                 </button>
                 <div class="equip-accordion-item__nav">
                   <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
@@ -357,6 +365,9 @@
       </div>
       <div class="premios-grid">
         <div class="premio-card" data-bg-image="assets/images/hero-biblioteca-villa-lobos.jpg" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
           <div class="premio-card__icon" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M6 4h12v3a6 6 0 0 1-12 0V4Z" stroke="currentColor" stroke-width="1.7"/><path d="M6 6H4a2 2 0 0 0 0 4h1M18 6h2a2 2 0 0 1 0 4h-1" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
@@ -382,6 +393,9 @@
         </div>
 
         <div class="premio-card" data-bg-image="assets/images/equipamentos-biblioteca-interior.jpg" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
           <div class="premio-card__icon" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
@@ -407,6 +421,9 @@
         </div>
 
         <div class="premio-card" data-bg-image="assets/images/logo-natura.webp" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
           <div class="premio-card__icon" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.7"/><circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M17 8.5c1.4.4 2.4 1.7 2.4 3.2 0 1.2-.6 2.2-1.5 2.8M20.5 21v-2a3.8 3.8 0 0 0-2.4-3.5" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
@@ -432,6 +449,9 @@
         </div>
 
         <div class="premio-card" data-bg-image="assets/images/logo-globo.webp" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
           <div class="premio-card__icon" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 22h4M12 2a6 6 0 0 0-4 10.5c.6.6 1 1.3 1 2.1V15h6v-.4c0-.8.4-1.5 1-2.1A6 6 0 0 0 12 2Z" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
@@ -511,6 +531,15 @@
   </main>
 
   <site-footer class="snap-section"></site-footer>
+
+  <!-- Botão de subir uma seção — só desktop (ver CSS .section-nav--prev) -->
+  <button type="button" id="sectionNavPrev" class="section-nav section-nav--prev" aria-label="Ir para a seção anterior">
+    <svg class="section-nav__arrow" width="16" height="46" viewBox="0 0 16 46" fill="none" aria-hidden="true">
+      <line x1="8" y1="0" x2="8" y2="32" stroke="currentColor" stroke-width="1.5" />
+      <path d="M1.5 26L8 34L14.5 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <span class="section-nav__dot" aria-hidden="true"></span>
+  </button>
 
   <button type="button" id="sectionNav" class="section-nav" aria-label="Ir para a próxima seção">
     <svg class="section-nav__arrow" width="16" height="46" viewBox="0 0 16 46" fill="none" aria-hidden="true">
