@@ -287,6 +287,25 @@
         { threshold: 0.6 }
       );
       footerObserver.observe(lastSection);
+
+      // Botão de subir: escondido na primeira seção (hero) — não faz
+      // sentido "voltar" quando já se está no topo. Reaparece a
+      // partir da 2ª seção em diante.
+      if (sectionNavPrev) {
+        var firstSection = snapSections[0];
+        var firstSectionObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              sectionNavPrev.classList.toggle(
+                "is-first-section",
+                entry.isIntersecting
+              );
+            });
+          },
+          { threshold: 0.6 }
+        );
+        firstSectionObserver.observe(firstSection);
+      }
     }
   }
 

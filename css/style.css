@@ -1039,7 +1039,17 @@ h1.page-title {
   margin-bottom: 18px;
 }
 
+/* Wrapper posicionado só pra poder sobrepor .hero__nav em cima da
+   foto do card (as setas não podem morar dentro do <a> do card). */
+.hero__stage {
+  position: relative;
+}
+
 .hero__nav {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 5;
   display: flex;
   gap: 8px;
 }
@@ -2595,6 +2605,15 @@ h1.page-title {
    só invertida (seta pra cima, bolinha acima dela). ---- */
 .section-nav--prev {
   bottom: 164px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Escondido enquanto o usuário está na primeira seção (hero) — não
+   faz sentido "voltar" quando já se está no topo. */
+.section-nav--prev.is-first-section {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .section-nav--prev .section-nav__arrow {

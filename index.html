@@ -28,14 +28,6 @@
     <section class="hero container snap-section">
       <div class="hero__eyebrow-row">
         <a href="novidades.html" class="eyebrow">novidades</a>
-        <div class="hero__nav">
-          <button type="button" class="hero__nav-btn" data-gallery-nav="prev" aria-label="Banner anterior">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button type="button" class="hero__nav-btn" data-gallery-nav="next" aria-label="Próximo banner">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
       </div>
 
       <!-- Fonte de dados dos banners do carrossel — HTML puro (sem JSON
@@ -67,27 +59,42 @@
         </div>
       </div>
 
-      <a class="hero__card" href="novidade-detalhe.html">
-        <img
-          src="assets/images/hero-biblioteca-villa-lobos.jpg"
-          alt="Fachada da Biblioteca Parque Villa-Lobos, prédio moderno cercado de gramado"
-          width="1600"
-          height="900"
-          data-hero-image
-        />
-        <div class="hero__card-body">
-          <h2 data-hero-title>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
-          <p data-hero-text>
-            O equipamento, que ocupa uma área de 4 mil m², é conectado com questões de
-            sustentabilidade, além de oferecer espaços para lazer, trabalho e estudo. Atingiu
-            recentemente a marca de 2 milhões de usuários atendidos.
-          </p>
-          <span class="btn btn--pink">
-            saiba mais
-            <svg class="btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
+      <!-- .hero__stage: wrapper posicionado (position:relative) só pra
+           poder sobrepor as setas de paginação em cima da foto — elas
+           não podem ficar dentro do .hero__card porque ele é um <a>
+           (não dá pra ter <button> dentro de link). -->
+      <div class="hero__stage">
+        <a class="hero__card" href="novidade-detalhe.html">
+          <img
+            src="assets/images/hero-biblioteca-villa-lobos.jpg"
+            alt="Fachada da Biblioteca Parque Villa-Lobos, prédio moderno cercado de gramado"
+            width="1600"
+            height="900"
+            data-hero-image
+          />
+          <div class="hero__card-body">
+            <h2 data-hero-title>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
+            <p data-hero-text>
+              O equipamento, que ocupa uma área de 4 mil m², é conectado com questões de
+              sustentabilidade, além de oferecer espaços para lazer, trabalho e estudo. Atingiu
+              recentemente a marca de 2 milhões de usuários atendidos.
+            </p>
+            <span class="btn btn--pink">
+              saiba mais
+              <svg class="btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <div class="hero__nav">
+          <button type="button" class="hero__nav-btn" data-gallery-nav="prev" aria-label="Banner anterior">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="hero__nav-btn" data-gallery-nav="next" aria-label="Próximo banner">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
-      </a>
+      </div>
 
       <!-- Pré-visualização dos próximos banners: 3 posições fixas no
            HTML, JS preenche com os próximos da fila (com wraparound).

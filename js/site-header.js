@@ -198,22 +198,30 @@ class SiteHeader extends HTMLElement {
       }
     });
 
-    // ---- Header compacto a partir da 2ª seção (.snap-section) ----
+    // ---- Header compacto logo após passar o título "novidades" ----
     // Fica encapsulado aqui dentro (em vez de um script externo) porque
     // precisa do "wrapper" real (a div .site-header), não da tag
     // <site-header> em si — são elementos diferentes.
-    const firstSection = document.querySelector(".snap-section");
+    //
+    // Observa a .hero__eyebrow-row (onde fica "novidades") em vez da
+    // seção inteira. rootMargin negativo no topo, do tamanho do
+    // próprio header, encolhe a área "visível" considerada pelo
+    // observer — assim, "não está mais intersectando" significa
+    // "esse elemento acabou de ficar encoberto pelo header sticky",
+    // não "saiu da tela inteira". Dispara exatamente no momento em
+    // que "novidades" passa por baixo do header.
+    const eyebrowRow = document.querySelector(".hero__eyebrow-row");
 
-    if (firstSection && "IntersectionObserver" in window) {
+    if (eyebrowRow && "IntersectionObserver" in window) {
       const headerObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             wrapper.classList.toggle("is-compact", !entry.isIntersecting);
           });
         },
-        { threshold: 0.5 }
+        { threshold: 0, rootMargin: `-${wrapper.offsetHeight}px 0px 0px 0px` }
       );
-      headerObserver.observe(firstSection);
+      headerObserver.observe(eyebrowRow);
     }
 
     // ---- Reporta a própria altura numa CSS var ----
