@@ -308,9 +308,14 @@ html.has-loader {
 }
 
 /* O rodapé não deve ser centralizado verticalmente — mantém o conteúdo
-   colado na base da tela, como um rodapé de página normal. */
+   colado na base da tela, como um rodapé de página normal.
+   height (não min-height): trava em 100vh de verdade, só neste
+   elemento — a regra global .snap-section (min-height:100vh) continua
+   intacta pras outras seções, essa sobrescrita é específica daqui. */
 site-footer.snap-section {
   justify-content: flex-end;
+  height: 100vh;
+  min-height: 0;
 }
 
 .divider {
@@ -860,6 +865,119 @@ h1.page-title {
 .site-footer {
   background: var(--color-bg);
   color: var(--color-ink);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Os dois blocos somam exatamente 100% (=100vh) do .site-footer —
+   como cada um já tem height explícita (não flex:auto/conteúdo),
+   não existe cálculo circular nem disputa de flex-grow/shrink. */
+.site-footer__info {
+  height: 50vh;
+  overflow: auto;
+  display: grid;
+}
+
+/* ---- Galeria de fotos (preenche o espaço vazio no topo do rodapé) ---- */
+.site-footer__gallery {
+  height: 50vh;
+  padding-block: 32px 8px;
+}
+
+.site-footer__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 3vw;
+  height: 100%;
+}
+
+@media (min-width: 640px) {
+  .site-footer__gallery-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+.site-footer__gallery-item {
+  display: block;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-ink);
+}
+
+.site-footer__gallery-item img {
+  width: 100%;
+  /* height:100% da célula do grid — funciona sem dependência circular
+     porque .site-footer__gallery-grid agora tem altura DEFINIDA
+     (100% de .site-footer__gallery, que por sua vez é 50vh fixo). */
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, transform 0.3s ease;
+}
+
+.site-footer__gallery-item:hover img {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.site-footer__gallery-item:focus-visible {
+  outline: 3px solid var(--color-pink);
+  outline-offset: 2px;
+}
+
+/* ---- Lightbox: modal de visualização das fotos da galeria ---- */
+.site-footer__lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 290;
+  background: rgba(20, 17, 17, 0.88);
+}
+
+.site-footer__lightbox-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.site-footer__lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.site-footer__lightbox-close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 310;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.site-footer__lightbox-close:hover {
+  background: #fff;
 }
 
 .site-footer__links {
@@ -1182,6 +1300,52 @@ h1.page-title {
   padding: 14px;
   background: var(--color-pink);
   transition: background-color 0.2s ease;
+}
+
+/* ---- Desktop: hero sempre cabe numa tela só ----
+   Precisa vir DEPOIS das regras base acima (.hero__stage, .hero__card,
+   .hero__card img, .hero-preview, .hero-preview__media) — mesma
+   especificidade em cada uma, então quem vem por último no arquivo
+   vale. Em vez de alturas fixas que podem não caber, a seção usa a
+   altura exata que sobra depois do header (--header-h, medido
+   dinamicamente em site-header.js — funciona tanto com o header cheio
+   quanto compacto) e a IMAGEM é quem encolhe/cresce pra preencher o
+   espaço restante, depois de eyebrow-row, paddings e prévia já
+   terem reservado o próprio espaço fixo. */
+@media (min-width: 720px) {
+  .hero {
+    height: calc(100vh - var(--header-h));
+    min-height: 0;
+    padding-block: 24px 28px;
+  }
+
+  .hero__eyebrow-row {
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+
+  .hero__stage {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .hero__card {
+    height: 100%;
+  }
+
+  .hero__card img {
+    height: 100%;
+  }
+
+  .hero-preview {
+    flex-shrink: 0;
+    margin-top: 16px;
+  }
+
+  .hero-preview__media {
+    min-height: 84px;
+    padding: 12px;
+  }
 }
 
 .hero-preview__media img {
