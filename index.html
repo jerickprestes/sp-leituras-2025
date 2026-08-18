@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SP Leituras — Organização Social de Cultura</title>
+  <meta
+    name="description"
+    content="A SP Leituras é uma organização social especialista em gestão de projetos culturais ligados à leitura, linguagens e conhecimento."
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Tela de carregamento: fica visível pelo menos 2s (ver JS), logo
+       piscando (opacidade alternando). Só existe nesta página por
+       enquanto — se quiser em todas as páginas do site, é só pedir
+       que eu replico. -->
+  <div id="siteLoader" class="site-loader" aria-hidden="true">
+    <span class="site-loader__logo">spleituras</span>
+  </div>
+
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <site-header active="institucional"></site-header>
+
+  <main id="conteudo">
+    <!-- ===================== HERO / NOVIDADES ===================== -->
+    <section class="hero container snap-section">
+      <div class="hero__eyebrow-row">
+        <a href="novidades.html" class="eyebrow">novidades</a>
+      </div>
+
+      <!-- Fonte de dados dos banners do carrossel — HTML puro (sem JSON
+           embutido), pra ficar fácil de adicionar/editar um banner à
+           mão: duplique um .hero-slide, troque a imagem, o título, o
+           texto e o data-href. O JS lê isso e preenche o card visível
+           logo abaixo; esta lista em si nunca aparece na tela. -->
+      <div class="hero-slides" hidden>
+        <div class="hero-slide" data-href="novidade-detalhe.html">
+          <img src="assets/images/hero-biblioteca-villa-lobos.jpg" alt="Fachada da Biblioteca Parque Villa-Lobos, prédio moderno cercado de gramado" />
+          <h2>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
+          <p>O equipamento, que ocupa uma área de 4 mil m², é conectado com questões de sustentabilidade, além de oferecer espaços para lazer, trabalho e estudo. Atingiu recentemente a marca de 2 milhões de usuários atendidos.</p>
+        </div>
+        <!-- TODO: banners 2, 3 e 4 são placeholders (imagem/texto de teste, reaproveitando assets já existentes) — substituir por notícias reais -->
+        <div class="hero-slide" data-href="#">
+          <img src="assets/images/equipamentos-biblioteca-interior.jpg" alt="Interior de biblioteca com estantes de livros e área de leitura" />
+          <h2>BibliON alcança nova marca de empréstimos digitais</h2>
+          <p>Texto institucional pendente — substituir pelo conteúdo real desta notícia.</p>
+        </div>
+        <div class="hero-slide" data-href="#">
+          <img src="https://images.pexels.com/photos/1837726/pexels-photo-1837726.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" />
+          <h2>SP Leituras firma nova parceria com patrocinador</h2>
+          <p>Texto institucional pendente — substituir pelo conteúdo real desta notícia.</p>
+        </div>
+        <div class="hero-slide" data-href="#">
+          <img src="https://images.pexels.com/photos/35425456/pexels-photo-35425456.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" />
+          <h2>Prêmio de inovação reconhece projeto da SP Leituras</h2>
+          <p>Texto institucional pendente — substituir pelo conteúdo real desta notícia.</p>
+        </div>
+      </div>
+
+      <!-- .hero__stage: wrapper posicionado (position:relative) só pra
+           poder sobrepor as setas de paginação em cima da foto — elas
+           não podem ficar dentro do .hero__card porque ele é um <a>
+           (não dá pra ter <button> dentro de link). -->
+      <div class="hero__stage">
+        <a class="hero__card" href="novidade-detalhe.html">
+          <img
+            src="assets/images/hero-biblioteca-villa-lobos.jpg"
+            alt="Fachada da Biblioteca Parque Villa-Lobos, prédio moderno cercado de gramado"
+            width="1600"
+            height="900"
+            data-hero-image
+          />
+          <div class="hero__card-body">
+            <h2 data-hero-title>Biblioteca parque Villa-Lobos torna-se exemplo de revitalização do espaço urbano</h2>
+            <p data-hero-text>
+              O equipamento, que ocupa uma área de 4 mil m², é conectado com questões de
+              sustentabilidade, além de oferecer espaços para lazer, trabalho e estudo. Atingiu
+              recentemente a marca de 2 milhões de usuários atendidos.
+            </p>
+            <span class="btn btn--pink">
+              saiba mais
+              <svg class="btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <div class="hero__nav">
+          <button type="button" class="hero__nav-btn" data-gallery-nav="prev" aria-label="Banner anterior">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="hero__nav-btn" data-gallery-nav="next" aria-label="Próximo banner">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pré-visualização dos próximos banners: 3 posições fixas no
+           HTML, JS preenche com os próximos da fila (com wraparound).
+           A 3ª some via CSS no mobile (só 2 lá); no desktop as 3
+           aparecem. -->
+      <div class="hero-preview" role="list" aria-label="Próximos banners">
+        <button type="button" class="hero-preview__item" data-preview-index="0">
+          <span class="hero-preview__media">
+            <img src="" alt="" />
+            <span class="hero-preview__title"></span>
+          </span>
+        </button>
+        <button type="button" class="hero-preview__item" data-preview-index="0">
+          <span class="hero-preview__media">
+            <img src="" alt="" />
+            <span class="hero-preview__title"></span>
+          </span>
+        </button>
+        <button type="button" class="hero-preview__item" data-preview-index="0">
+          <span class="hero-preview__media">
+            <img src="" alt="" />
+            <span class="hero-preview__title"></span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== NOSSA ATUAÇÃO ===================== -->
+    <section class="section snap-section" id="nossa-atuacao" data-nav-contrast="true">
+      <div class="container">
+        <div class="section-title-row">
+          <span class="eyebrow">nossa atuação</span>
+        </div>
+        <div class="atuacao-grid">
+          <div>
+            <h3>_quem somos</h3>
+            <p>
+              A SP Leituras é uma organização social especialista em gestão de projetos culturais
+              ligados à leitura, linguagens e conhecimento.
+            </p>
+            <p>
+              O nosso trabalho é baseado na inclusão, diversidade, autonomia e sustentabilidade.
+            </p>
+            <a href="transparencia.html" class="btn btn--pink">
+              saiba mais
+              <svg class="btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <div>
+            <h3>_o que fazemos</h3>
+            <p>
+              Apoiada na ideia contemporânea de Biblioteca Viva, a SP Leituras atua com excelência
+              nos seguintes eixos:
+            </p>
+            <ul class="atuacao-list">
+              <li>gestão de equipamentos</li>
+              <li>desenvolvimento de projetos</li>
+              <li>formulação e execução de política públicas</li>
+              <li>fomento à biblioteca viva</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EQUIPAMENTOS ===================== -->
+    <section class="section equip snap-section" id="equipamentos">
+      <div class="container equip-grid">
+        <div>
+          <span class="eyebrow">equipamentos</span>
+          <h2>Especialista em gestão de projetos culturais ligados à leitura, linguagens e conhecimento.</h2>
+          <div class="equip-icons" aria-hidden="true">
+            <span>BSP</span>
+            <span>BVL</span>
+            <span>ON</span>
+            <span>SEB</span>
+          </div>
+        </div>
+
+        <div class="equip-card">
+          <ul class="equip-accordion" data-equip-accordion>
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  siseb
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "https://images.pexels.com/photos/30498607/pexels-photo-30498607.jpeg?auto=compress&cs=tinysrgb&w=2400"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="Interior de biblioteca com estantes de livros e área de leitura"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  O Sistema Estadual de Bibliotecas Públicas de São Paulo integra bibliotecas públicas
+                  municipais de São Paulo e trabalha em parceria com a SP Leituras.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  biblioteca de são paulo
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "https://images.pexels.com/photos/28721577/pexels-photo-28721577.jpeg?auto=compress&cs=tinysrgb&w=2400"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="Biblioteca de São Paulo"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por texto e fotos reais da Biblioteca de São Paulo -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  biblioteca parque villa-lobos
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/hero-biblioteca-villa-lobos.jpg", "assets/images/equipamentos-biblioteca-interior.jpg", "https://images.pexels.com/photos/27391136/pexels-photo-27391136.jpeg?auto=compress&cs=tinysrgb&w=2400"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/hero-biblioteca-villa-lobos.jpg"
+                    alt="Fachada da Biblioteca Parque Villa-Lobos"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por texto e fotos reais da Biblioteca Parque Villa-Lobos -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  biblion
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "https://images.pexels.com/photos/14171373/pexels-photo-14171373.jpeg?auto=compress&cs=tinysrgb&w=2400"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="BibliON"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por resumo real do BibliON (a página completa já existe) -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="equipamento.html" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+
+            <li class="equip-accordion-item">
+              <div class="equip-accordion-item__head">
+                <button type="button" class="equip-accordion-item__trigger" aria-expanded="false">
+                  centro cultural áuthos pagano
+                </button>
+                <div class="equip-accordion-item__nav">
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="prev" aria-label="Foto anterior">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button type="button" class="equip-accordion-item__nav-btn" data-gallery-nav="next" aria-label="Próxima foto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="equip-accordion-item__body" data-gallery='["assets/images/equipamentos-biblioteca-interior.jpg", "assets/images/hero-biblioteca-villa-lobos.jpg", "https://images.pexels.com/photos/1046124/pexels-photo-1046124.jpeg?auto=compress&cs=tinysrgb&w=2400"]'>
+                <div class="equip-accordion-item__media">
+                  <img
+                    src="assets/images/equipamentos-biblioteca-interior.jpg"
+                    alt="Centro Cultural Áuthos Pagano"
+                    width="1000"
+                    height="666"
+                    loading="lazy"
+                    data-gallery-image
+                  />
+                </div>
+                <p>
+                  <!-- TODO: substituir por texto e fotos reais do Centro Cultural Áuthos Pagano -->
+                  Texto institucional pendente — substituir pelo conteúdo real deste equipamento.
+                </p>
+                <a href="#" class="equip-accordion-item__link">
+                  ver página completa
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RECONHECIMENTO E PRÊMIOS ===================== -->
+    <section class="section snap-section premios-section">
+      <div class="premios-bg" aria-hidden="true">
+        <img class="premios-bg__img" alt="" data-premios-bg-image />
+      </div>
+      <div class="container">
+      <div class="section-title-row">
+        <span class="eyebrow">reconhecimento e prêmios</span>
+        <p class="section-lede">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Clique para saber mais.
+        </p>
+      </div>
+      <div class="premios-grid">
+        <div class="premio-card" data-bg-image="assets/images/hero-biblioteca-villa-lobos.jpg" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <div class="premio-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M6 4h12v3a6 6 0 0 1-12 0V4Z" stroke="currentColor" stroke-width="1.7"/><path d="M6 6H4a2 2 0 0 0 0 4h1M18 6h2a2 2 0 0 1 0 4h-1" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+          <h3>_100 melhores ONGs</h3>
+          <p>Entre 2018 e 2021, fomos eleitos uma das 100 melhores ONGs do Brasil pelo Instituto Filantropia e Doar.</p>
+
+          <div class="premio-card__hint" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span>clique para saber mais</span>
+          </div>
+
+          <div class="premio-card__extra">
+            <div class="premio-card__extra-images">
+              <img src="https://images.pexels.com/photos/30827138/pexels-photo-30827138.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/18903434/pexels-photo-18903434.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/34219241/pexels-photo-34219241.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+            </div>
+            <p class="premio-card__extra-text">
+              <!-- TODO: substituir por texto real sobre este reconhecimento -->
+              Texto complementar pendente — substituir por conteúdo real sobre este prêmio.
+            </p>
+          </div>
+        </div>
+
+        <div class="premio-card" data-bg-image="assets/images/equipamentos-biblioteca-interior.jpg" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <div class="premio-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+          <h3>_melhor ONG da cultura</h3>
+          <p>Em 2021, fomos premiados como a melhor ONG na categoria Cultura.</p>
+
+          <div class="premio-card__hint" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span>clique para saber mais</span>
+          </div>
+
+          <div class="premio-card__extra">
+            <div class="premio-card__extra-images">
+              <img src="https://images.pexels.com/photos/877971/pexels-photo-877971.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/13399469/pexels-photo-13399469.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/7244576/pexels-photo-7244576.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+            </div>
+            <p class="premio-card__extra-text">
+              <!-- TODO: substituir por texto real sobre este reconhecimento -->
+              Texto complementar pendente — substituir por conteúdo real sobre este prêmio.
+            </p>
+          </div>
+        </div>
+
+        <div class="premio-card" data-bg-image="https://images.pexels.com/photos/19100919/pexels-photo-19100919.jpeg?auto=compress&cs=tinysrgb&w=2400" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <div class="premio-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.7"/><circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M17 8.5c1.4.4 2.4 1.7 2.4 3.2 0 1.2-.6 2.2-1.5 2.8M20.5 21v-2a3.8 3.8 0 0 0-2.4-3.5" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+          <h3>_direitos humanos e diversidade</h3>
+          <p>Em 2023, recebemos o Selo Municipal de Direitos Humanos e Diversidade de São Paulo pela ação "Acolhimento na Biblioteca de São Paulo".</p>
+
+          <div class="premio-card__hint" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span>clique para saber mais</span>
+          </div>
+
+          <div class="premio-card__extra">
+            <div class="premio-card__extra-images">
+              <img src="https://images.pexels.com/photos/33892136/pexels-photo-33892136.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/1837726/pexels-photo-1837726.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/30498607/pexels-photo-30498607.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+            </div>
+            <p class="premio-card__extra-text">
+              <!-- TODO: substituir por texto real sobre este reconhecimento -->
+              Texto complementar pendente — substituir por conteúdo real sobre este prêmio.
+            </p>
+          </div>
+        </div>
+
+        <div class="premio-card" data-bg-image="https://images.pexels.com/photos/20898112/pexels-photo-20898112.png?auto=compress&cs=tinysrgb&w=2400" role="button" tabindex="0" aria-pressed="false">
+          <span class="premio-card__close" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <div class="premio-card__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 22h4M12 2a6 6 0 0 0-4 10.5c.6.6 1 1.3 1 2.1V15h6v-.4c0-.8.4-1.5 1-2.1A6 6 0 0 0 12 2Z" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+          <h3>_inovação e impacto social</h3>
+          <p>Também em 2023, ganhamos o Prêmio Seleção Mobile Time na categoria Inovação com Impacto Social/Ambiental pela BibliON.</p>
+
+          <div class="premio-card__hint" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span>clique para saber mais</span>
+          </div>
+
+          <div class="premio-card__extra">
+            <div class="premio-card__extra-images">
+              <img src="https://images.pexels.com/photos/20898105/pexels-photo-20898105.png?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/1046125/pexels-photo-1046125.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+              <img src="https://images.pexels.com/photos/28721577/pexels-photo-28721577.jpeg?auto=compress&cs=tinysrgb&w=2400" alt="" loading="lazy" />
+            </div>
+            <p class="premio-card__extra-text">
+              <!-- TODO: substituir por texto real sobre este reconhecimento -->
+              Texto complementar pendente — substituir por conteúdo real sobre este prêmio.
+            </p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- ===================== PATROCINADORES / PARCEIROS ===================== -->
+    <section class="container logos-block snap-section">
+      <div class="logos-group">
+        <span class="mono-label">_alguns patrocinadores</span>
+        <div class="logos-row">
+          <img src="assets/images/logo-colegio-vital-brazil.webp" alt="Colégio Vital Brazil" width="140" height="63" loading="lazy" />
+          <img src="assets/images/logo-stima-energia.webp" alt="Stima Energia" width="140" height="67" loading="lazy" />
+          <img src="assets/images/logo-empiricus.webp" alt="Empiricus" width="140" height="33" loading="lazy" />
+          <img src="assets/images/logo-wtw.webp" alt="WTW" width="140" height="45" loading="lazy" />
+          <img src="assets/images/logo-otis.webp" alt="Otis" width="140" height="46" loading="lazy" />
+          <img src="assets/images/logo-velt-partners.webp" alt="Velt Partners" width="140" height="49" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="logos-group">
+        <span class="mono-label">_alguns de nossos parceiros</span>
+        <div class="logos-row">
+          <img src="assets/images/logo-motorola.webp" alt="Motorola" width="120" height="80" loading="lazy" />
+          <img src="assets/images/logo-vr-beneficios.webp" alt="VR Benefícios" width="80" height="80" loading="lazy" />
+          <img src="assets/images/logo-pampers.webp" alt="Pampers" width="120" height="70" loading="lazy" />
+          <img src="assets/images/logo-mitsubishi.webp" alt="Mitsubishi" width="90" height="99" loading="lazy" />
+          <img src="assets/images/logo-volkswagen.webp" alt="Volkswagen" width="80" height="80" loading="lazy" />
+          <img src="assets/images/logo-natura.webp" alt="Natura" width="100" height="76" loading="lazy" />
+          <img src="assets/images/logo-prefeitura-votuporanga.webp" alt="Prefeitura de Votuporanga" width="150" height="76" loading="lazy" />
+          <img src="assets/images/logo-canon.webp" alt="Canon" width="140" height="29" loading="lazy" />
+          <img src="assets/images/logo-vivo.webp" alt="Vivo" width="140" height="41" loading="lazy" />
+          <img src="assets/images/logo-globo.webp" alt="Globo" width="80" height="80" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA PATROCINADOR ===================== -->
+    <section class="section cta-dark snap-section" data-nav-contrast="true">
+      <div class="container cta-dark-grid">
+        <div>
+          <span class="eyebrow">organização social de cultura</span>
+          <h2>_torne-<br />se um<br />patroci<br />nador</h2>
+        </div>
+        <div class="cta-dark-copy">
+          <p>
+            Visibilidade em materiais de divulgação, redes sociais e eventos, além de participação
+            em cerimônias exclusivas e relatórios de impacto.
+          </p>
+          <a href="contato.html" class="btn btn--pink">
+            _entre em contato
+            <svg class="btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <site-footer class="snap-section"></site-footer>
+
+  <!-- Botão de subir uma seção — só desktop (ver CSS .section-nav--prev) -->
+  <button type="button" id="sectionNavPrev" class="section-nav section-nav--prev" aria-label="Ir para a seção anterior">
+    <svg class="section-nav__arrow" width="16" height="46" viewBox="0 0 16 46" fill="none" aria-hidden="true">
+      <line x1="8" y1="0" x2="8" y2="32" stroke="currentColor" stroke-width="1.5" />
+      <path d="M1.5 26L8 34L14.5 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <span class="section-nav__dot" aria-hidden="true"></span>
+  </button>
+
+  <button type="button" id="sectionNav" class="section-nav" aria-label="Ir para a próxima seção">
+    <svg class="section-nav__arrow" width="16" height="46" viewBox="0 0 16 46" fill="none" aria-hidden="true">
+      <line x1="8" y1="0" x2="8" y2="32" stroke="currentColor" stroke-width="1.5" />
+      <path d="M1.5 26L8 34L14.5 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <span class="section-nav__dot" aria-hidden="true"></span>
+  </button>
+
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-footer.js" defer></script>
+  <script src="js/site-interactions.js" defer></script>
+</body>
+</html>
