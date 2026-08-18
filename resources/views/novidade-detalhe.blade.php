@@ -1,0 +1,113 @@
+{{--
+  resources/views/novidade-detalhe.blade.php
+
+  Convertido de novidade-detalhe.html — mesma técnica usada em home.blade.php:
+  header/footer viraram @include, assets locais viraram raiz-absolutos,
+  links .html viraram rotas limpas, URLs externas (Pexels etc., se
+  houver) não foram tocadas. Conteúdo ainda hardcoded (1ª passada).
+--}}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SisEB é reconhecido como a melhor marca pública do mundo — SP Leituras</title>
+  <meta
+    name="description"
+    content="Prêmio internacional destaca a nova identidade visual do SisEB e reforça seu compromisso com a inovação e a acessibilidade nas bibliotecas públicas."
+  />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  @include('partials.header', ['active' => 'novidades'])
+
+  <main id="conteudo">
+    <section class="container section">
+      <p style="margin-bottom:22px;">
+        <a href="/novidades" class="mono-label" style="color:var(--color-ink-70);">← voltar para novidades</a>
+      </p>
+
+      <figure class="article-cover">
+        <img
+          src="/assets/images/news-siseb-posters.jpg"
+          alt="Composição de cartazes coloridos com a nova identidade visual do SisEB"
+        />
+        <figcaption class="article-cover__body">
+          <span class="tag tag--siseb">_siseb</span>
+          <h1>SisEB é reconhecido como a melhor marca pública do mundo no iF DESIGN AWARD 2025</h1>
+          <span class="news-item__date" style="color:#fff;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5" stroke="currentColor" stroke-width="1.6"/><line x1="8" y1="3" x2="8" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="3" x2="16" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            10/02/2025
+          </span>
+        </figcaption>
+      </figure>
+
+      <article class="article-body">
+        <p class="lede">
+          Prêmio internacional destaca a nova identidade visual do SisEB e reforça seu compromisso
+          com a inovação e a acessibilidade nas bibliotecas públicas.
+        </p>
+
+        <p>
+          O <strong>Sistema Estadual de Bibliotecas Públicas de São Paulo (SisEB)</strong>, programa
+          da Secretaria da Cultura, Economia e Indústria Criativas coordenado pela UDBL em parceria
+          com a SP Leituras, conquistou o renomado <strong>iF DESIGN AWARD 2025</strong>, sendo eleito
+          na disciplina Communication, categoria Public Branding, como a melhor marca pública do
+          mundo. O reconhecimento destaca a nova identidade visual da instituição e seu impacto na
+          disseminação do conceito de Biblioteca Viva — dinâmica, interativa e adaptável às
+          necessidades da comunidade.
+        </p>
+
+        <blockquote>
+          "Receber este prêmio é um marco para o SisEB e para os 40 anos de trabalho dedicados ao
+          fortalecimento das bibliotecas públicas. Hoje, o SisEB conecta 1.448 bibliotecas e salas de
+          leitura de acesso público em 447 municípios paulistas, promovendo iniciativas que tornam
+          esses espaços mais vivos, acessíveis e eficientes. Ver a logomarca deste programa
+          reconhecida internacionalmente é motivo de grande orgulho", afirma <strong>Marília Marton</strong>,
+          Secretária da Cultura, Economia e Indústria Criativas do Estado de São Paulo.
+        </blockquote>
+
+        <p>
+          Essa conquista internacional evidencia não apenas a identidade visual do SisEB, mas também
+          seu compromisso com a disseminação da cultura e do conhecimento de forma moderna. O novo
+          design da marca reflete os princípios fundamentais do SisEB: acessibilidade, dinamismo e
+          inovação na promoção do livro, da leitura e das bibliotecas públicas no Estado de São Paulo.
+        </p>
+
+        <blockquote>
+          "O SisEB tem o desafio contínuo de estreitar a conexão entre as bibliotecas e seus
+          usuários. Para isso, inspirados pela geometria do livro, criamos uma representação gráfica
+          de um espaço dinâmico, conectado e digital, em sintonia com o presente e com as
+          necessidades de uma biblioteca viva, acessível e eficiente. O resultado é uma identidade
+          nova, que projeta um caminho para o futuro, mais próximo e engajador, com um enorme
+          potencial de inspirar o público e fomentar a troca de conhecimento", diz
+          <strong>Jorge Monge</strong>, Diretor de Criação e Design da D4G, responsável pela criação
+          da nova marca.
+        </blockquote>
+
+        <p>
+          Organizado pela iF International Forum Design GmbH, o iF DESIGN AWARD é uma das premiações
+          mais prestigiadas do mundo no campo do design. Em 2025, a competição contou com mais de 11
+          mil projetos inscritos, vindos de 66 países, sendo avaliada por um corpo de jurados
+          independentes formado por 131 especialistas.
+        </p>
+
+        <p>
+          <strong>Sobre o iF DESIGN AWARD.</strong> Criado em 1954, o iF DESIGN AWARD certifica a
+          excelência em diversas disciplinas, incluindo produto, embalagem, comunicação, design de
+          serviço, arquitetura, design de interiores, conceito profissional, experiência do usuário
+          (UX) e interface do usuário (UI). Ao longo de sete décadas, o prêmio consolidou-se como um
+          dos principais referenciais globais em inovação e design.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  @include('partials.footer')
+
+  <script src="/js/site-header.js" defer></script>
+  <script src="/js/site-footer.js" defer></script>
+</body>
+</html>
