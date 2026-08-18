@@ -429,6 +429,35 @@
     setupFadeGallery(navButtons, image, gallery);
   });
 
+  /* ---- Abertura automática do 1º item da sanfona ----
+     A sanfona começa toda fechada (nenhum item com .is-open no HTML).
+     Quando a seção #equipamentos fica 100% visível na tela, o primeiro
+     item (SISEB) abre sozinho — efeito de revelação ao chegar na seção,
+     em vez de já chegar com um item pré-aberto. */
+  (function setupEquipAutoOpen() {
+    var equipSection = document.getElementById("equipamentos");
+    if (!equipSection || !equipItems.length || !("IntersectionObserver" in window)) {
+      return;
+    }
+
+    var hasOpened = false;
+
+    var autoOpenObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !hasOpened) {
+            hasOpened = true;
+            openEquipItem(equipItems[0]);
+            autoOpenObserver.unobserve(equipSection);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    autoOpenObserver.observe(equipSection);
+  })();
+
   /* ---- Fade-in sequencial dos elementos de cada seção ----
      Primeira versão (heurística, ajustável depois): pega os filhos
      diretos de cada .snap-section como "elementos"; se um desses

@@ -12,32 +12,46 @@ class SiteFooter extends HTMLElement {
     this.innerHTML = `
       <footer class="site-footer">
         <div class="container site-footer__gallery">
-          <div class="site-footer__gallery-grid">
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/30498607/pexels-photo-30498607.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Interior de biblioteca">
-              <img src="https://images.pexels.com/photos/30498607/pexels-photo-30498607.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Interior de biblioteca" loading="lazy" />
+          <!-- Fonte de dados das 8 fotos — HTML puro, escondido, nunca
+               aparece na tela. O JS lê isso e preenche os 5 slots
+               visíveis logo abaixo, com loop (a 6ª foto some a 1ª
+               reaparece, etc.). Editar/adicionar fotos aqui é só
+               duplicar um .site-footer__gallery-slide. -->
+          <div class="site-footer__gallery-slides" hidden>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/30498607/pexels-photo-30498607.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/30498607/pexels-photo-30498607.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Interior de biblioteca"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/27391136/pexels-photo-27391136.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/27391136/pexels-photo-27391136.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Estantes de livros"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/1046124/pexels-photo-1046124.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/1046124/pexels-photo-1046124.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Biblioteca moderna"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/30827138/pexels-photo-30827138.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/30827138/pexels-photo-30827138.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Sala de leitura"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/877971/pexels-photo-877971.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/877971/pexels-photo-877971.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Corredor de biblioteca"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/7244576/pexels-photo-7244576.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/7244576/pexels-photo-7244576.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Arquitetura de biblioteca"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/35425456/pexels-photo-35425456.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/35425456/pexels-photo-35425456.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Espaço de leitura"></div>
+            <div class="site-footer__gallery-slide" data-src="https://images.pexels.com/photos/34219241/pexels-photo-34219241.jpeg?auto=compress&cs=tinysrgb&w=1600" data-thumb="https://images.pexels.com/photos/34219241/pexels-photo-34219241.jpeg?auto=compress&cs=tinysrgb&w=600" data-alt="Acervo de livros"></div>
+          </div>
+
+          <div class="site-footer__gallery-row" role="list" aria-label="Galeria de fotos">
+            <button type="button" class="site-footer__gallery-item" role="listitem">
+              <img src="" alt="" loading="lazy" />
             </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/27391136/pexels-photo-27391136.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Estantes de livros">
-              <img src="https://images.pexels.com/photos/27391136/pexels-photo-27391136.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Estantes de livros" loading="lazy" />
+            <button type="button" class="site-footer__gallery-item" role="listitem">
+              <img src="" alt="" loading="lazy" />
             </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/1046124/pexels-photo-1046124.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Biblioteca moderna">
-              <img src="https://images.pexels.com/photos/1046124/pexels-photo-1046124.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Biblioteca moderna" loading="lazy" />
+            <button type="button" class="site-footer__gallery-item" role="listitem">
+              <img src="" alt="" loading="lazy" />
             </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/30827138/pexels-photo-30827138.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Sala de leitura">
-              <img src="https://images.pexels.com/photos/30827138/pexels-photo-30827138.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Sala de leitura" loading="lazy" />
+            <button type="button" class="site-footer__gallery-item" role="listitem">
+              <img src="" alt="" loading="lazy" />
             </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/877971/pexels-photo-877971.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Corredor de biblioteca">
-              <img src="https://images.pexels.com/photos/877971/pexels-photo-877971.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Corredor de biblioteca" loading="lazy" />
-            </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/7244576/pexels-photo-7244576.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Arquitetura de biblioteca">
-              <img src="https://images.pexels.com/photos/7244576/pexels-photo-7244576.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Arquitetura de biblioteca" loading="lazy" />
-            </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/35425456/pexels-photo-35425456.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Espaço de leitura">
-              <img src="https://images.pexels.com/photos/35425456/pexels-photo-35425456.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Espaço de leitura" loading="lazy" />
-            </button>
-            <button type="button" class="site-footer__gallery-item" data-lightbox-src="https://images.pexels.com/photos/34219241/pexels-photo-34219241.jpeg?auto=compress&cs=tinysrgb&w=1600" data-lightbox-alt="Acervo de livros">
-              <img src="https://images.pexels.com/photos/34219241/pexels-photo-34219241.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Acervo de livros" loading="lazy" />
+            <button type="button" class="site-footer__gallery-item" role="listitem">
+              <img src="" alt="" loading="lazy" />
             </button>
           </div>
+
+          <button type="button" class="site-footer__gallery-nav-btn site-footer__gallery-nav-btn--prev" data-gallery-dir="prev" aria-label="Fotos anteriores">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="site-footer__gallery-nav-btn site-footer__gallery-nav-btn--next" data-gallery-dir="next" aria-label="Próximas fotos">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
 
         <div class="site-footer__info">
@@ -125,12 +139,57 @@ class SiteFooter extends HTMLElement {
       </div>
     `;
 
+    // ---- Carrossel da galeria (1 linha, 5 fotos visíveis, loop) ----
+    // As 8 fotos reais vivem escondidas em .site-footer__gallery-slides
+    // (HTML puro). Os 5 botões visíveis são "janelas" fixas — a cada
+    // clique nas setas, a janela desliza uma posição, com wraparound
+    // (módulo): da última foto volta pra primeira e vice-versa.
+    const gallerySlides = Array.prototype
+      .slice.call(this.querySelectorAll(".site-footer__gallery-slide"))
+      .map((node) => ({
+        src: node.getAttribute("data-src"),
+        thumb: node.getAttribute("data-thumb"),
+        alt: node.getAttribute("data-alt") || "",
+      }));
+
+    const galleryItems = this.querySelectorAll(".site-footer__gallery-item");
+    const galleryNavButtons = this.querySelectorAll(
+      "[data-gallery-dir]"
+    );
+    let galleryStart = 0;
+
+    const renderGallery = () => {
+      if (!gallerySlides.length) return;
+      galleryItems.forEach((item, offset) => {
+        var slideIndex = (galleryStart + offset) % gallerySlides.length;
+        var slide = gallerySlides[slideIndex];
+        var img = item.querySelector("img");
+        if (img) {
+          img.setAttribute("src", slide.thumb);
+          img.setAttribute("alt", slide.alt);
+        }
+        item.setAttribute("data-slide-index", String(slideIndex));
+      });
+    };
+
+    galleryNavButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!gallerySlides.length) return;
+        var direction = btn.getAttribute("data-gallery-dir") === "next" ? 1 : -1;
+        galleryStart =
+          (galleryStart + direction + gallerySlides.length) %
+          gallerySlides.length;
+        renderGallery();
+      });
+    });
+
+    renderGallery();
+
     // ---- Lightbox da galeria de fotos ----
     // Mesmo padrão de UX já usado no drawer do menu e na busca
     // off-canvas (site-header.js): overlay escurecido, X, Esc, clique
     // fora, scroll-lock, foco indo pro botão de fechar ao abrir e
     // voltando pra miniatura clicada ao fechar.
-    const galleryItems = this.querySelectorAll(".site-footer__gallery-item");
     const lightbox = this.querySelector(".site-footer__lightbox");
     const lightboxImg = this.querySelector(".site-footer__lightbox-img");
     const lightboxClose = this.querySelector(".site-footer__lightbox-close");
@@ -157,11 +216,9 @@ class SiteFooter extends HTMLElement {
 
     galleryItems.forEach((item) => {
       item.addEventListener("click", () => {
-        openLightbox(
-          item.getAttribute("data-lightbox-src"),
-          item.getAttribute("data-lightbox-alt"),
-          item
-        );
+        var slideIndex = parseInt(item.getAttribute("data-slide-index"), 10);
+        var slide = gallerySlides[slideIndex];
+        if (slide) openLightbox(slide.src, slide.alt, item);
       });
     });
 

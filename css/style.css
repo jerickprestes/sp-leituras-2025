@@ -882,27 +882,29 @@ h1.page-title {
 
 /* ---- Galeria de fotos (preenche o espaço vazio no topo do rodapé) ---- */
 .site-footer__gallery {
+  position: relative;
   height: 50vh;
-  padding-block: 32px 8px;
+  padding-block: 32px 36px;
+  overflow: hidden;
+  /* Centraliza a linha única de fotos verticalmente dentro dos 50vh —
+     como agora é só 1 linha (não mais um grid de várias), sobra
+     espaço vertical de propósito. */
+  display: flex;
+  align-items: center;
 }
 
-.site-footer__gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 3vw;
-  height: 100%;
-}
-
-@media (min-width: 640px) {
-  .site-footer__gallery-grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
+.site-footer__gallery-row {
+  display: flex;
+  width: 100%;
+  gap: 1.5vw;
 }
 
 .site-footer__gallery-item {
   display: block;
+  /* Sempre exatamente 5 por linha, largura fixa — não é responsivo
+     por breakpoint, é a "janela" do carrossel (ver JS: as setas
+     deslizam o conteúdo dentro dela, com loop). */
+  flex: 0 0 calc((100% - 4 * 1.5vw) / 5);
   padding: 0;
   border: none;
   border-radius: var(--radius-sm);
@@ -913,10 +915,7 @@ h1.page-title {
 
 .site-footer__gallery-item img {
   width: 100%;
-  /* height:100% da célula do grid — funciona sem dependência circular
-     porque .site-footer__gallery-grid agora tem altura DEFINIDA
-     (100% de .site-footer__gallery, que por sua vez é 50vh fixo). */
-  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
   opacity: 0.9;
@@ -931,6 +930,39 @@ h1.page-title {
 .site-footer__gallery-item:focus-visible {
   outline: 3px solid var(--color-pink);
   outline-offset: 2px;
+}
+
+/* ---- Setas de navegação do carrossel ---- */
+.site-footer__gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  color: var(--color-ink);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+}
+
+.site-footer__gallery-nav-btn:hover {
+  background: var(--color-pink);
+  border-color: var(--color-pink);
+  color: #fff;
+}
+
+.site-footer__gallery-nav-btn--prev {
+  left: 6px;
+}
+
+.site-footer__gallery-nav-btn--next {
+  right: 6px;
 }
 
 /* ---- Lightbox: modal de visualização das fotos da galeria ---- */
